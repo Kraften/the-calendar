@@ -1,0 +1,79 @@
+body {
+  margin: 0;
+  background: #fff;
+  color: #333;
+  font-family: georgia, serif;
+  font-size: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0px;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.pin-center {
+  align-items: center;
+  justify-content: center;
+}
+
+.cover {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+}
+
+.hover {
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.hover:after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.hover:hover {
+  transform: scale(1.1, 1.1);
+}
+
+.hover:hover::after {
+  opacity: 1;
+}
+
+@font-face {
+    font-family: 'montserrat-light';
+    src: local('montserrat-light'), url(./fonts//montserrat/Montserrat-Light.ttf) format('opentype');
+}
+
+@font-face {
+    font-family: 'montserrat-medium';
+    src: local('montserrat-medium'), url(./fonts//montserrat/Montserrat-Medium.ttf) format('opentype');
+}
+
+@font-face {
+    font-family: 'montserrat-semibold';
+    src: local('montserrat-semibold'), url(./fonts//montserrat/Montserrat-SemiBold.ttf) format('opentype');
+}
