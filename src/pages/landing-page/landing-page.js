@@ -12,6 +12,7 @@ const LandingPage = () => {
         setShowLoginPanel(data)
     }
 
+    // TODO: is this being used (viewPortFix)?
     viewPortFix(window.innerHeight)
     return (
         <div className="landing-page">

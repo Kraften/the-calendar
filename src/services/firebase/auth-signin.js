@@ -1,7 +1,7 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
 import { useContext } from "react";
-import AuthContext from "../../store/auth-context";
 import { auth } from './firebase'
+import { signInWithEmailAndPassword } from "firebase/auth";
+import AuthContext from "../../store/auth-context";
 
 const SignIn = (email, password) => {
   const authCtx = useContext(AuthContext);

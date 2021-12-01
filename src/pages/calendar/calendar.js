@@ -45,6 +45,7 @@ export default class Calendar extends Component {
 
     render() {
         const { isPanelOpen } = this.state;
+
         return (
             <div className="App">
                 <div>

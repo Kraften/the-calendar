@@ -15,7 +15,9 @@ function Month(props) {
         }
         return { eventMonth, event };
     });
+
     const monthHasEvents = eventsOfMonth.length > 0 ? true : false;
+
     if (monthHasEvents) {
         return (
             <div className="flex-column">
