@@ -1,3 +1,4 @@
+import React from 'react'
 import moment from "moment";
 import "./event.css";
 
@@ -31,7 +32,7 @@ function Event(props) {
                     {events.map((event) => {
                         const dateTime = moment(event.date);
                         return (
-                            <div className="event flex-column">
+                            <div className="event flex-column" key={event.id}>
                                 <span className="event-time">
                                     {dateTime.format("hh:mm")}
                                 </span>
@@ -48,5 +49,9 @@ function Event(props) {
     });
     return <div>{array}</div>;
 }
+
+Event.propTypes = {
+    eventsOfMonth: Array,
+};
 
 export default Event;

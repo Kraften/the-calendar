@@ -1,33 +1,37 @@
+import React from 'react'
+import PropTypes from 'prop-types';
+import SignInForm from './sign-in-form/sign-in-form.jsx'
 import './login-overlay.css'
 
 const LoginOverlay = (props) => {
     const close = () => {
-        console.log('in overlay',props.a)
-        const az = props.a
-        props.func(!az)
-
+        const showLoginPanel = props.showLoginPanel
+        props.handleClose(!showLoginPanel)
     }
     return (
         <div className={
-            props.a 
+            props.showLoginPanel
                 ? "overlay flex-column pin-center show"
                 : "overlay flex-column pin-center"
         }>
             <div className="overlay-content flex-column">
                 <button className="close-button" onClick={close}>
                     <span className={
-                        props.a
+                        props.showLoginPanel
                             ? "close-button-text"
                             : "close-button-text clicked"
-                        }
-                    >+</span></button>
-                <input type="text" placeholder="email" />
-                <input type="text" placeholder="password" />
-                <input type="submit" />
-
+                    }
+                    >X</span></button>
+                <SignInForm></SignInForm>
             </div>
         </div>
     )
 }
+
+LoginOverlay.propTypes = {
+    // TODO: Add correct propType here!
+    showLoginPanel: PropTypes.any,
+    handleClose: PropTypes.func,
+};
 
 export default LoginOverlay;

@@ -1,9 +1,9 @@
-import moment from "moment";
 import React, { Component } from "react";
+import moment from "moment";
+import AddEventPanel from "../../components/add-event-panel/add-event-panel";
+import Month from "../../components/month/month";
+import list from "../../components/mocks/mocks";
 import "./calendar.css";
-import AddEventPanel from "../add-event-panel/add-event-panel";
-import Month from "../month/month";
-import list from "../mocks/mocks";
 
 export default class Calendar extends Component {
     constructor() {
@@ -24,18 +24,18 @@ export default class Calendar extends Component {
 
     eventsIntoMonthBuckets = () => {
         const monthList = moment.months();
-        let eventByMonth = [];
+        let eventsByMonth = [];
         const monthBucket = monthList.map((month) => {
             list.map((event) => {
                 const monthOfEvent = moment(event.date).format("MMMM");
                 if (month === monthOfEvent) {
-                    eventByMonth.push(event);
+                    eventsByMonth.push(event);
                 }
-                return eventByMonth;
+                return eventsByMonth;
             });
             return (
                 <li key={month.monthName}>
-                    <Month monthName={month} events={eventByMonth}></Month>
+                    <Month monthName={month.toString()} events={eventsByMonth}></Month>
                 </li>
             );
         });

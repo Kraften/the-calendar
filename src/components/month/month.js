@@ -1,11 +1,13 @@
+import React from 'react'
 import moment from "moment";
-import "../../App.css";
 import eventList from "../../mocks/mocks";
-import Event from "../day/event.js";
+import Event from "../event/event";
+import "../../App.css";
 import "./month.css";
 
 function Month(props) {
     const eventsOfMonth = [];
+
     eventList.map((event) => {
         const eventMonth = moment(event.date).format("MMMM");
         if (eventMonth === props.monthName) {
@@ -25,5 +27,9 @@ function Month(props) {
         return <div></div>;
     }
 }
+
+Month.propTypes = {
+    monthName: String
+};
 
 export default Month;
