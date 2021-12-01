@@ -12,7 +12,8 @@ export default class Calendar extends Component {
             isPanelOpen: false
         };
     }
-    onClick = () => {
+
+    openAddEventPanel = () => {
         this.setState({
             isPanelOpen: !this.state.isPanelOpen
         });
@@ -53,7 +54,7 @@ export default class Calendar extends Component {
                     <div className="cover">
                         <button
                             type="button"
-                            onClick={this.onClick}
+                            onClick={this.openAddEventPanel}
                             className="add-event-button"
                         >
                             <span
