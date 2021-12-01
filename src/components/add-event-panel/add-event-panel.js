@@ -2,16 +2,13 @@ import React, { Component } from "react";
 import "./add-event-panel.css";
 
 function AddEventPanel({ isOpen }) {
-    AddEventPanel.propTypes = {
-        isOpen: Boolean
-      };
-
     return (
         <div>
             <EventForm isOpen={isOpen} />
         </div>
     );
 }
+
 class EventForm extends Component {
     constructor(props) {
         super(props);
@@ -64,6 +61,10 @@ class EventForm extends Component {
         );
     }
 }
+
+AddEventPanel.propTypes = {
+    isOpen: Boolean
+};
 
 EventForm.propTypes = {
     isOpen: Boolean

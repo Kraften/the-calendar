@@ -38,12 +38,13 @@ const SignInForm = () => {
 
 export default SignInForm;
 
-
+/*--------------------------------------
+------------Styled Components-----------
+--------------------------------------*/
 const StyledForm = styled.form`
     display: flex;
     flex-direction: column;
 `
-
 const StyledInput = styled.input`
     all: unset;
     color: #B3413D;
@@ -53,7 +54,6 @@ const StyledInput = styled.input`
     margin-bottom: 10px;
     border-radius: 7px;
 `
-
 const StyledButton = styled.input`
     all: unset;
     color: #B3413D;
