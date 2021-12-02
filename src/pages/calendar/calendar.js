@@ -3,6 +3,7 @@ import moment from "moment";
 import AddEventPanel from "../../components/add-event-panel/add-event-panel";
 import Month from "../../components/month/month";
 import list from "../../components/mocks/mocks";
+import styled from "styled-components";
 import "./calendar.css";
 
 export default class Calendar extends Component {
@@ -47,11 +48,11 @@ export default class Calendar extends Component {
         const { isPanelOpen } = this.state;
 
         return (
-            <div className="App">
+            <StyledCalendar className="App">
                 <div>
-                    <div className="top-year">
+                    <StyledYearText className="top-year">
                         <span className="year">{this.getYear()}</span>
-                    </div>
+                    </StyledYearText>
                     <div className="cover">
                         <button
                             type="button"
@@ -73,7 +74,24 @@ export default class Calendar extends Component {
 
                     <ul>{this.eventsIntoMonthBuckets()}</ul>
                 </div>
-            </div>
+            </StyledCalendar>
         );
     }
 }
+
+/*--------------------------------------
+------------Styled Components-----------
+--------------------------------------*/
+const StyledCalendar = styled.div`
+    padding: 0 30px;
+`
+
+const StyledYearText = styled.div`
+    display: flex;
+    justify-content: center;
+    
+    span {
+        font-family: 'Montserrat-semibold';
+        font-size: 4em;
+    }
+`

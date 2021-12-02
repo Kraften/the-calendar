@@ -6,8 +6,8 @@
     left: 0;
     box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2); 
     border-radius: 5px;
-    background-color: #B3413D;
-    /* background-color: rgba(255, 255, 255, .15); */
+    background: #c94b4b;  /* fallback for old browsers */
+    background: linear-gradient(to right, #4b134f, #c94b4b);
     backdrop-filter: blur(5px);
     opacity: 0;
     visibility: hidden;

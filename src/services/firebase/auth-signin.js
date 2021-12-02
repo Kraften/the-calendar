@@ -1,22 +1,25 @@
-import { useContext } from "react";
-import { auth } from './firebase'
-import { signInWithEmailAndPassword } from "firebase/auth";
-import AuthContext from "../../store/auth-context";
+// import { useContext } from "react";
+// import { auth } from './firebase'
+// import { signInWithEmailAndPassword } from "firebase/auth";
+// import AuthContext from "../../store/auth-context";
 
-const SignIn = (email, password) => {
-  const authCtx = useContext(AuthContext);
-  signInWithEmailAndPassword(auth, email,  password)
-    .then((userCredential) => {
-      // Signed in 
-      const user = userCredential.user;
-      console.log(user)
-      // ...
-    })
-    .catch((error) => {
-      // const errorCode = error.code;
-      // const errorMessage = error.message;
 
-    });
-}
+// const SignIn = (email, password) => {
+//   signInWithEmailAndPassword(auth, email,  password)
+//   .then((userCredential) => { // Signed in 
+//       console.log(userCredential)
+//       const authCtx = useContext(AuthContext);
+//       console.log(authCtx)
 
-export default SignIn;
+
+//       const user = userCredential.user;
+//       authCtx.login(user.accessToken)
+//     })
+//     .catch((error) => {
+//       const errorCode = error.code;
+//       const errorMessage = error.message;
+//       console.log(errorCode, errorMessage)
+//     });
+// }
+
+// export default SignIn;

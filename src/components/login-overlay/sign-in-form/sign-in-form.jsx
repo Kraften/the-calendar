@@ -1,10 +1,18 @@
-import React, { useRef, useState } from "react"
+import React, { useRef, useState, useContext } from "react"
 import styled from "styled-components";
-import signIn from "../../../services/firebase/auth-signin";
+import { useNavigate } from "react-router-dom";
+
+import { auth } from '../../../services/firebase/firebase'
+import { signInWithEmailAndPassword } from "firebase/auth";
+import AuthContext from "../../../store/auth-context";
 
 const SignInForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('')
+
+    const navigate = useNavigate();
+
+    const authCtx = useContext(AuthContext);
 
     const emailInputRef = useRef();
     const passwordInputRef = useRef();
@@ -18,6 +26,21 @@ const SignInForm = () => {
         event.preventDefault()
         setPassword(event.target.value)
     }
+
+    const signIn = (email, password) => {
+        signInWithEmailAndPassword(auth, email,  password)
+        .then((userCredential) => { // Signed in 
+    
+            const user = userCredential.user;
+            authCtx.login(user.accessToken)
+            navigate('/calendar')
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log('Error',errorCode, errorMessage)
+          });
+      }
 
     const handleSubmit = (event) => {
         event.preventDefault();
