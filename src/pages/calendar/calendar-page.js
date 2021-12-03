@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import moment from "moment";
-import AddEventPanel from "../../components/add-event-panel/add-event-panel";
-import Month from "../../components/month/month";
-import list from "../../components/mocks/mocks";
-import styled from "styled-components";
-import "./calendar.css";
+import React, { Component } from 'react';
+import moment from 'moment';
+import AddEventPanel from '../../components/add-event-panel-component/add-event-panel-component';
+import Month from '../../components/month-component/month-component';
+import list from '../../mocks/mocks';
+import styled from 'styled-components';
+import './calendar-page.css';
 
-export default class Calendar extends Component {
+export default class CalendarPage extends Component {
     constructor() {
         super();
         this.state = {
@@ -21,7 +21,7 @@ export default class Calendar extends Component {
     };
 
     getYear = () => {
-        return moment(list[0].date).format("YYYY");
+        return moment(list[0].date).format('YYYY');
     };
 
     eventsIntoMonthBuckets = () => {
@@ -29,7 +29,7 @@ export default class Calendar extends Component {
         let eventsByMonth = [];
         const monthBucket = monthList.map((month) => {
             list.map((event) => {
-                const monthOfEvent = moment(event.date).format("MMMM");
+                const monthOfEvent = moment(event.date).format('MMMM');
                 if (month === monthOfEvent) {
                     eventsByMonth.push(event);
                 }
@@ -37,7 +37,10 @@ export default class Calendar extends Component {
             });
             return (
                 <li key={month}>
-                    <Month monthName={month.toString()} events={eventsByMonth}></Month>
+                    <Month
+                        monthName={month.toString()}
+                        events={eventsByMonth}
+                    ></Month>
                 </li>
             );
         });
@@ -62,8 +65,8 @@ export default class Calendar extends Component {
                             <span
                                 className={
                                     isPanelOpen
-                                        ? "add-event-button-text clicked"
-                                        : "add-event-button-text"
+                                        ? 'add-event-button-text clicked'
+                                        : 'add-event-button-text'
                                 }
                             >
                                 +
@@ -84,14 +87,14 @@ export default class Calendar extends Component {
 --------------------------------------*/
 const StyledCalendar = styled.div`
     padding: 0 30px;
-`
+`;
 
 const StyledYearText = styled.div`
     display: flex;
     justify-content: center;
-    
+
     span {
         font-family: 'Montserrat-semibold';
         font-size: 4em;
     }
-`
+`;

@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const CalendarEventComponent = (props) => {
     const dateTime = moment(props.event.date);
     return (
-        <StyledEvent className="event flex-column" key={props.event.id}>
+        <StyledEvent key={props.event.id} className="event flex-column">
             <span className="event-time">{dateTime.format('hh:mm')}</span>
             <span className="event-name">{props.event.name}</span>
-            <span >{props.event.comment}</span>
+            <span>{props.event.comment}</span>
         </StyledEvent>
     );
 };
@@ -25,7 +25,7 @@ const StyledEvent = styled.div`
     border-left: 11px solid black;
     font-family: 'montserrat-medium';
     transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-    
+
     &:hover {
         border-left: 25px solid black;
     }

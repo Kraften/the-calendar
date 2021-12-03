@@ -1,7 +1,7 @@
-import React from "react";
-import PropTypes from 'prop-types'
-import EventForm from "./add-event-form/add-event-form";
-import "./add-event-panel.css";
+import React from 'react';
+import PropTypes from 'prop-types';
+import EventForm from './add-event-form-component/add-event-form-component';
+import './add-event-panel-component.css';
 
 function AddEventPanel({ isOpen }) {
     return (
