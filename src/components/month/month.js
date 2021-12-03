@@ -1,7 +1,8 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import moment from "moment";
 import eventList from "../../mocks/mocks";
-import Event from "../event/event";
+import CalendarDayComponent from "../calendar-day-component/calendar-day-component";
 import "../../App.css";
 import "./month.css";
 
@@ -22,7 +23,7 @@ function Month(props) {
         return (
             <div className="flex-column">
                 <span className="month-name">{props.monthName}</span>
-                <Event eventsOfMonth={eventsOfMonth}></Event>
+                <CalendarDayComponent eventsOfMonth={eventsOfMonth}></CalendarDayComponent>
             </div>
         );
     } else {
@@ -31,7 +32,7 @@ function Month(props) {
 }
 
 Month.propTypes = {
-    monthName: String
+    monthName: PropTypes.string
 };
 
 export default Month;

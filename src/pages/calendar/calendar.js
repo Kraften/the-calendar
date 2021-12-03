@@ -36,7 +36,7 @@ export default class Calendar extends Component {
                 return eventsByMonth;
             });
             return (
-                <li key={month.monthName}>
+                <li key={month}>
                     <Month monthName={month.toString()} events={eventsByMonth}></Month>
                 </li>
             );
