@@ -1,17 +1,38 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import moment from 'moment';
 import AddEventPanel from '../../components/add-event-panel-component/add-event-panel-component';
 import Month from '../../components/month-component/month-component';
 import list from '../../mocks/mocks';
 import styled from 'styled-components';
+import FirebaseEventsService from '../../services/firebase/events.service';
 import './calendar-page.css';
 
 export default class CalendarPage extends Component {
     constructor() {
         super();
         this.state = {
-            isPanelOpen: false
+            isPanelOpen: false,
+            calendarEvents: []
         };
+    }
+
+    componentDidMount() {
+        this.getAllCalendarEvents();
+    }
+
+    async getAllCalendarEvents() {
+        let calendarEvents = [];
+        FirebaseEventsService.getAll().then((eventsList) => {
+            eventsList.forEach((event) => {
+                const a = moment.unix(event.data().date.seconds).toDate();
+                const eventWithUnixDate = {
+                    ...event.data(),
+                    date: a
+                };
+                calendarEvents.push(eventWithUnixDate);
+            });
+            this.setState({ calendarEvents: calendarEvents });
+        });
     }
 
     openAddEventPanel = () => {
@@ -28,7 +49,7 @@ export default class CalendarPage extends Component {
         const monthList = moment.months();
         let eventsByMonth = [];
         const monthBucket = monthList.map((month) => {
-            list.map((event) => {
+            this.state.calendarEvents.map((event) => {
                 const monthOfEvent = moment(event.date).format('MMMM');
                 if (month === monthOfEvent) {
                     eventsByMonth.push(event);
@@ -49,7 +70,6 @@ export default class CalendarPage extends Component {
 
     render() {
         const { isPanelOpen } = this.state;
-
         return (
             <StyledCalendar className="App">
                 <div>

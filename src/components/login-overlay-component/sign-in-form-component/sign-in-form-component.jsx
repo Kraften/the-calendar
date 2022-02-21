@@ -7,8 +7,8 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import AuthContext from "../../../store/auth-context";
 
 const SignInForm = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('')
+    const [email, setEmail] = useState('a@a.com');
+    const [password, setPassword] = useState('aaaaaa')
 
     const navigate = useNavigate();
 
@@ -52,8 +52,8 @@ const SignInForm = () => {
 
     return (
         <StyledForm>
-            <StyledInput type="text" ref={emailInputRef} placeholder="email" required onChange={handleEmailInputChange} />
-            <StyledInput type="password" ref={passwordInputRef} placeholder="password" required onChange={handlePasswordInputChange} />
+            <StyledInput type="text" value='a@a.com' ref={emailInputRef} placeholder="email" required onChange={handleEmailInputChange} />
+            <StyledInput type="password" value='aaaaaa' ref={passwordInputRef} placeholder="password" required onChange={handlePasswordInputChange} />
             <StyledButton type="submit" onClick={handleSubmit} />
         </StyledForm>
     )
@@ -71,19 +71,17 @@ const StyledForm = styled.form`
 const StyledInput = styled.input`
     all: unset;
     color: #B3413D;
-    background-color: #E5E1D5;;
+    background-color: white;
     height: 50px;
     padding: 0 10px;
     margin-bottom: 10px;
-    border-radius: 7px;
 `
 const StyledButton = styled.input`
     all: unset;
     color: #B3413D;
-    background-color: #E5E1D5;;
+    background-color: white;
     height: 50px;
     padding: 0 10px;
     margin-bottom: 10px;
-    border-radius: 7px;
     cursor: pointer;
 `

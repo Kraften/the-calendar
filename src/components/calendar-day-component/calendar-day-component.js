@@ -31,7 +31,7 @@ const CalendarDayComponent = (props) => {
         const dayNumber = day[1];
 
         return daysInMonth.push(
-            <div className="day">
+            <div className="day" key={dayNumber}>
                 <div className="flex-column">
                     <span className="date-number">{dayNumber}</span>
                     <span className="date-name">{dayName}</span>

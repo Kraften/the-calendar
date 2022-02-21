@@ -12,7 +12,7 @@ function AddEventPanel({ isOpen }) {
 }
 
 AddEventPanel.propTypes = {
-    isOpen: PropTypes.boolean
+    isOpen: PropTypes.bool
 };
 
 export default AddEventPanel;
