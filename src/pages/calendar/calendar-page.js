@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import moment from 'moment';
 import AddEventPanel from '../../components/add-event-panel-component/add-event-panel-component';
 import Month from '../../components/month-component/month-component';
@@ -6,50 +6,30 @@ import list from '../../mocks/mocks';
 import styled from 'styled-components';
 import FirebaseEventsService from '../../services/firebase/events.service';
 import './calendar-page.css';
+import { onSnapshot } from 'firebase/firestore';
 
-export default class CalendarPage extends Component {
-    constructor() {
-        super();
-        this.state = {
-            isPanelOpen: false,
-            calendarEvents: []
-        };
-    }
+const CalendarPage = () => {
+    const [isPanelOpen, setIsPanelOpen] = useState(false);
+    const [calendarEvents, setCalendarEvents] = useState([]);
+    const [year, setYear] = useState('');
 
-    componentDidMount() {
-        this.getAllCalendarEvents();
-    }
-
-    async getAllCalendarEvents() {
-        let calendarEvents = [];
-        FirebaseEventsService.getAll().then((eventsList) => {
-            eventsList.forEach((event) => {
-                const a = moment.unix(event.data().date.seconds).toDate();
-                const eventWithUnixDate = {
-                    ...event.data(),
-                    date: a
-                };
-                calendarEvents.push(eventWithUnixDate);
-            });
-            this.setState({ calendarEvents: calendarEvents });
+    useEffect(() => {
+        const query = FirebaseEventsService.getAllQuery();
+        onSnapshot(query, (querySnap) => {
+            setYear(moment(querySnap.docs[0].data().date).format('YYYY'));
+            setCalendarEvents(querySnap.docs.map((e) => e.data()));
         });
-    }
+    }, []);
 
-    openAddEventPanel = () => {
-        this.setState({
-            isPanelOpen: !this.state.isPanelOpen
-        });
+    const openAddEventPanel = () => {
+        setIsPanelOpen(!isPanelOpen);
     };
 
-    getYear = () => {
-        return moment(list[0].date).format('YYYY');
-    };
-
-    eventsIntoMonthBuckets = () => {
+    const eventsIntoMonthBuckets = () => {
         const monthList = moment.months();
         let eventsByMonth = [];
         const monthBucket = monthList.map((month) => {
-            this.state.calendarEvents.map((event) => {
+            calendarEvents.map((event) => {
                 const monthOfEvent = moment(event.date).format('MMMM');
                 if (month === monthOfEvent) {
                     eventsByMonth.push(event);
@@ -68,40 +48,38 @@ export default class CalendarPage extends Component {
         return monthBucket;
     };
 
-    render() {
-        const { isPanelOpen } = this.state;
-        return (
-            <StyledCalendar className="App">
-                <div>
-                    <StyledYearText className="top-year">
-                        <span className="year">{this.getYear()}</span>
-                    </StyledYearText>
-                    <div className="cover">
-                        <button
-                            type="button"
-                            onClick={this.openAddEventPanel}
-                            className="add-event-button"
+    return (
+        <StyledCalendar className="App">
+            <div>
+                <StyledYearText className="top-year">
+                    <span className="year">{year}</span>
+                </StyledYearText>
+                <div className="cover">
+                    <button
+                        type="button"
+                        onClick={openAddEventPanel}
+                        className="add-event-button"
+                    >
+                        <span
+                            className={
+                                isPanelOpen
+                                    ? 'add-event-button-text clicked'
+                                    : 'add-event-button-text'
+                            }
                         >
-                            <span
-                                className={
-                                    isPanelOpen
-                                        ? 'add-event-button-text clicked'
-                                        : 'add-event-button-text'
-                                }
-                            >
-                                +
-                            </span>
-                        </button>
-                        <AddEventPanel isOpen={isPanelOpen}></AddEventPanel>
-                    </div>
-
-                    <ul>{this.eventsIntoMonthBuckets()}</ul>
+                            +
+                        </span>
+                    </button>
+                    <AddEventPanel isOpen={isPanelOpen}></AddEventPanel>
                 </div>
-            </StyledCalendar>
-        );
-    }
-}
 
+                <ul>{eventsIntoMonthBuckets()}</ul>
+            </div>
+        </StyledCalendar>
+    );
+};
+
+export default CalendarPage;
 /*--------------------------------------
 ------------Styled Components-----------
 --------------------------------------*/

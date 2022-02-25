@@ -8,7 +8,7 @@ const CalendarEventComponent = (props) => {
     return (
         <StyledEvent key={props.event.id} className="event flex-column">
             <span className="event-time">{dateTime.format('hh:mm')}</span>
-            <span className="event-name">{props.event.name}</span>
+            <span className="event-name">{props.event.title}</span>
             <span>{props.event.comment}</span>
         </StyledEvent>
     );
@@ -45,8 +45,8 @@ const StyledEvent = styled.div`
 CalendarEventComponent.propTypes = {
     event: PropTypes.shape({
         id: PropTypes.string,
-        name: PropTypes.string,
-        date: PropTypes.instanceOf(Date),
+        title: PropTypes.string,
+        date: PropTypes.string,
         start: PropTypes.string,
         end: PropTypes.string,
         comment: PropTypes.string

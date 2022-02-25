@@ -46,7 +46,6 @@ const SignInForm = () => {
         event.preventDefault();
         const enteredEmail = emailInputRef.current.value
         const enteredPassword = passwordInputRef.current.value
-        console.log(enteredEmail, enteredPassword)
         signIn(enteredEmail, enteredPassword)
     }
 
