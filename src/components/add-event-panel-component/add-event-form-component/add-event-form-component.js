@@ -4,7 +4,9 @@ import FirebaseEventsService from '../../../services/firebase/events.service';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 
-const EventForm = (props) => {
+// isOpen comes from parent and controls the Open/close of the AddEventPanel.
+const EventForm = ({ isOpen }) => {
+    // Destructuring of features from useForm package.
     const {
         register,
         handleSubmit,
@@ -15,12 +17,12 @@ const EventForm = (props) => {
     const handleAddEvent = (event) => {
         FirebaseEventsService.saveNewEvent(event).then(() => {
             reset();
-            props.isOpen = !props.isOpen;
         });
     };
 
     const handleError = (data) => console.log(data);
 
+    // Settings for registration of the inputs in the form.
     const formOptions = {
         title: { required: 'Title is required' },
         date: { required: 'Date is required' }
@@ -28,10 +30,10 @@ const EventForm = (props) => {
 
     return (
         <StyledAddEventPanel
-            className={props.isOpen ? 'add-panel open' : 'add-panel'}
+            className={isOpen ? 'add-panel open' : 'add-panel'}
         >
             <StyledAddEventForm
-                className={props.isOpen ? 'open' : ''}
+                className={isOpen ? 'open' : ''}
                 onSubmit={handleSubmit(handleAddEvent, handleError)}
             >
                 <StyledLabel>

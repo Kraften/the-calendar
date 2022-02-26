@@ -5,24 +5,35 @@ import CalendarDayComponent from '../calendar-day-component/calendar-day-compone
 import '../../App.css';
 import './month-component.css';
 
+/**
+ *
+ * @param {*} props { events: [], monthName: string }
+ * @returns
+ */
 function Month(props) {
-    const eventsOfMonth = [];
+    const eventsInMonth = [];
+    // Map events into month buckets.
     props.events.map((event) => {
-        const eventMonth = moment(event.date).format('MMMM');
-        if (eventMonth === props.monthName) {
-            eventsOfMonth.push(event);
+        const monthName = moment(event.date).format('MMMM');
+        if (monthName === props.monthName) {
+            eventsInMonth.push(event);
         }
-        return { eventMonth, event };
+
+        // Sort events in moth bucket on date, ascending.
+        eventsInMonth.sort(
+            (a, b) => moment(a.date).valueOf() - moment(b.date).valueOf()
+        );
     });
 
-    const monthHasEvents = eventsOfMonth.length > 0 ? true : false;
+    // Checks if month has events, if not we dont draw month at all.
+    const monthHasEvents = eventsInMonth.length > 0 ? true : false;
     if (monthHasEvents) {
         return (
             <div className="flex-column">
                 <span className="month-name">{props.monthName}</span>
                 <CalendarDayComponent
-                    key={eventsOfMonth}
-                    eventsOfMonth={eventsOfMonth}
+                    key={eventsInMonth}
+                    eventsInMonth={eventsInMonth}
                 ></CalendarDayComponent>
             </div>
         );

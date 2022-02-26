@@ -5,26 +5,29 @@ import './calendar-day-component.css';
 import CalendarEventComponent from './calendar-event-component/calendar-event-component';
 
 /**
+ * @param eventList list of events.
+ * @returns Bucket named by day and date and holds array of events on that day.
  *
- * @param {Object} eventList list of events in month
- * @returns Bucket named by day and date if events are present.
+ * exp. { Friday 01: [ {…}, {…} ] }
  */
 const eventsIntoDayBuckets = function (eventList) {
-    var period = {};
+    var dayBucket = {};
+    //
     eventList.map((event) => {
         let dayName = `${moment(event.date).format('dddd')} ${moment(
             event.date
         ).format('DD')}`;
-        period[dayName] = period[dayName] || [];
-        return period[dayName].push(event);
+        dayBucket[dayName] = dayBucket[dayName] || [];
+        return dayBucket[dayName].push(event);
     });
-    return period;
+    console.log(dayBucket);
+    return dayBucket;
 };
 
-const CalendarDayComponent = (props) => {
-    var objPeriodDay = eventsIntoDayBuckets(props.eventsOfMonth);
+const CalendarDayComponent = ({ eventsInMonth }) => {
+    var dayBucket = eventsIntoDayBuckets(eventsInMonth);
     const daysInMonth = [];
-    Object.entries(objPeriodDay).map((dayBucket) => {
+    Object.entries(dayBucket).map((dayBucket) => {
         const events = dayBucket[1];
         const day = dayBucket[0].split(' ');
         const dayName = day[0];
@@ -53,7 +56,7 @@ const CalendarDayComponent = (props) => {
 };
 
 CalendarDayComponent.propTypes = {
-    eventsOfMonth: PropTypes.array
+    eventsInMonth: PropTypes.array
 };
 
 export default CalendarDayComponent;

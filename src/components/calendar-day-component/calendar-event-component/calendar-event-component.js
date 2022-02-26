@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import styled from 'styled-components';
 
-const CalendarEventComponent = (props) => {
-    const dateTime = moment(props.event.date);
+// Destructed prop { event } is an object containing information that this component renders.
+const CalendarEventComponent = ({ event }) => {
+    const dateTime = moment(event.date);
     return (
-        <StyledEvent key={props.event.id} className="event flex-column">
+        <StyledEvent key={event.id} className="event flex-column">
             <span className="event-time">{dateTime.format('hh:mm')}</span>
-            <span className="event-name">{props.event.title}</span>
-            <span>{props.event.comment}</span>
+            <span className="event-name">{event.title}</span>
+            <span>{event.comment}</span>
         </StyledEvent>
     );
 };
