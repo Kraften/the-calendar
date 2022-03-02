@@ -166,5 +166,5 @@ const Nothing = styled.div`
     display: flex;
     justify-content: center;
     flex-direction: column;
-    letter-spacing: -15px;
+    letter-spacing: -6px;
 `;

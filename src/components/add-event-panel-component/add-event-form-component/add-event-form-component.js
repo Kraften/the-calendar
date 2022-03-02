@@ -96,7 +96,6 @@ const AddEventPanel = styled.div`
     margin: 25px;
     width: 60px;
     height: 60px;
-    background-color: black;
     color: black;
     z-index: -1;
     background-image: linear-gradient(150deg, #3c3a3a 0%, #000000 74%);
@@ -109,13 +108,14 @@ const AddEventPanel = styled.div`
     &.open {
         color: white;
         margin: 25px;
-        width: 750px;
+        width: 10px;
         height: auto;
         background-color: black;
         z-index: -1;
         display: flex;
         justify-content: center;
         align-items: center;
+
         @media (max-width: 1000px) {
             width: 100vw;
             margin: 0;
@@ -131,5 +131,9 @@ const AddEventForm = styled.form`
     &.open {
         display: flex;
         flex-direction: column;
+
+        @media (max-width: 500px) {
+            width: 75%;
+        }
     }
 `;

@@ -108,10 +108,7 @@ input:hover::placeholder {
 }
 
 textarea {
-  width: 470px;
-  max-width: 470px;
   height: 110px;
-  max-height: 110px;
   padding: 15px;
   font-size: 1em;
   background: transparent;

@@ -32,7 +32,7 @@ const SignInForm = (props) => {
         if(signInErr) { // Login fails
             const errorCode = signInErr.code;
             const errorMessage = signInErr.message;
-            throw new Error(errorMessage)
+            console.log(errorMessage)
         }
 
         if(userCredentials) { // Login success
@@ -51,7 +51,7 @@ const SignInForm = (props) => {
         signIn(enteredEmail, enteredPassword)
     }
 
-    const handleFormError = (data) => {throw new Error(data)}
+    const handleFormError = (error) => {console.log(error)}
 
     return (
         <StyledForm 
