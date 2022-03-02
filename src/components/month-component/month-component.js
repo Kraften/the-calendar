@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import CalendarDayComponent from '../calendar-day-component/calendar-day-component';
-import '../../App.css';
+import CalendarDayComponent from '../day-component/day-component';
 import './month-component.css';
 
 /**

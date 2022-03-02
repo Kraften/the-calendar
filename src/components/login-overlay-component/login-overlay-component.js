@@ -9,28 +9,29 @@ const LoginOverlay = (props) => {
         props.handleClose(!showLoginPanel);
     };
     return (
-        <div
-            className={
-                props.showLoginPanel
-                    ? 'overlay flex-column pin-center show'
-                    : 'overlay flex-column pin-center'
-            }
-        >
-            <div className="overlay-content flex-column">
-                <button className="close-button" onClick={close}>
-                    <span
-                        className={
-                            props.showLoginPanel
-                                ? 'close-button-text'
-                                : 'close-button-text clicked'
-                        }
-                    >
-                        X
-                    </span>
-                </button>
-                <SignInForm></SignInForm>
-            </div>
-        </div>
+        <SignInForm></SignInForm>
+
+        // <div
+        //     className={
+        //         props.showLoginPanel
+        //             ? 'overlay flex-column pin-center show'
+        //             : 'overlay flex-column pin-center'
+        //     }
+        // >
+        //     <div className="overlay-content flex-column">
+        //         <button className="close-button" onClick={close}>
+        //             <span
+        //                 className={
+        //                     props.showLoginPanel
+        //                         ? 'close-button-text'
+        //                         : 'close-button-text clicked'
+        //                 }
+        //             >
+        //                 X
+        //             </span>
+        //         </button>
+        //     </div>
+        // </div>
     );
 };
 

@@ -21,6 +21,12 @@
     transition: all 0.3s ease-in-out;
 }
 
+@media only screen and (max-width: 768px) {
+    .add-event-button {
+        margin: 0;
+    }
+}
+
 .add-event-button-text.clicked {
     transform: rotate(45deg);
 }

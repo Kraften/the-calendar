@@ -1,62 +1,89 @@
 import React, { useRef, useState, useContext } from "react"
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-
 import { auth } from '../../../services/firebase/firebase'
 import { signInWithEmailAndPassword } from "firebase/auth";
 import AuthContext from "../../../store/auth-context";
+import { useForm } from 'react-hook-form';
+import PropTypes from 'prop-types';
+import { handlePromise } from "../../../utils/utils";
 
-const SignInForm = () => {
-    const [email, setEmail] = useState('a@a.com');
-    const [password, setPassword] = useState('aaaaaa')
+const SignInForm = (props) => {
+    // Destructuring of features from useForm package.
+    const {
+        register,
+        handleSubmit,
+        reset,
+        getValues,
+        formState: { errors }
+    } = useForm();
 
-    const navigate = useNavigate();
-
+    // Settings for registration of the inputs in the form.
+    const formOptions = {
+        email: { required: 'Title is required' },
+        date: { required: 'Date is required' }
+    };
     const authCtx = useContext(AuthContext);
 
-    const emailInputRef = useRef();
-    const passwordInputRef = useRef();
+    const signIn = async (email, password) => {
+        let [userCredentials, signInErr] = await handlePromise(
+            signInWithEmailAndPassword(auth, email,  password)
+        );
 
-    const handleEmailInputChange = (event) => {
-        event.preventDefault()
-        setEmail(event.target.value)
-    }
+        if(signInErr) { // Login fails
+            const errorCode = signInErr.code;
+            const errorMessage = signInErr.message;
+            console.log('Error', errorMessage)
+            throw new Error(errorMessage)
+        }
 
-    const handlePasswordInputChange = (event) => {
-        event.preventDefault()
-        setPassword(event.target.value)
-    }
-
-    const signIn = (email, password) => {
-        signInWithEmailAndPassword(auth, email,  password)
-        .then((userCredential) => { // Signed in 
-    
-            const user = userCredential.user;
-            authCtx.login(user.accessToken)
-            navigate('/calendar')
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log('Error',errorCode, errorMessage)
-          });
+        if(userCredentials) { // Login success
+            const user = userCredentials.user;
+            authCtx.login(user.accessToken);
+            const isMenuOpen = props.isMenuOpen;
+            reset(); // Reset the form.
+            props.handleCloseFromChild(!isMenuOpen);
+            props.toggleOptionsMenuChild()
+        }
       }
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const enteredEmail = emailInputRef.current.value
-        const enteredPassword = passwordInputRef.current.value
+    const onSubmitClick = () => {
+        const enteredEmail = getValues('email')
+        const enteredPassword = getValues('password')
         signIn(enteredEmail, enteredPassword)
     }
 
+    const handleFormError = (data) => console.log(data);
+
     return (
-        <StyledForm>
-            <StyledInput type="text" value='a@a.com' ref={emailInputRef} placeholder="email" required onChange={handleEmailInputChange} />
-            <StyledInput type="password" value='aaaaaa' ref={passwordInputRef} placeholder="password" required onChange={handlePasswordInputChange} />
-            <StyledButton type="submit" onClick={handleSubmit} />
+        <StyledForm 
+            onSubmit={handleSubmit(onSubmitClick, handleFormError)}>
+            <input 
+                name="email"
+                type="text"
+                value="johannes.kraft1@gmail.com" 
+                {...register('email', formOptions.email)} 
+            />
+            <input
+                name="password"
+                type="password"
+                value="Walobalo3388!!"
+                {...register('password', formOptions.date)} 
+            />
+            <input 
+                type="submit" 
+                value="Submit"
+            />
         </StyledForm>
     )
 }
+
+SignInForm.propTypes = {
+    // TODO: Add correct propType here!
+    isMenuOpen: PropTypes.any,
+    handleCloseFromChild: PropTypes.func,
+    toggleOptionsMenuChild: PropTypes.func
+
+};
 
 export default SignInForm;
 
@@ -66,21 +93,4 @@ export default SignInForm;
 const StyledForm = styled.form`
     display: flex;
     flex-direction: column;
-`
-const StyledInput = styled.input`
-    all: unset;
-    color: #B3413D;
-    background-color: white;
-    height: 50px;
-    padding: 0 10px;
-    margin-bottom: 10px;
-`
-const StyledButton = styled.input`
-    all: unset;
-    color: #B3413D;
-    background-color: white;
-    height: 50px;
-    padding: 0 10px;
-    margin-bottom: 10px;
-    cursor: pointer;
 `

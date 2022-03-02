@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import './calendar-day-component.css';
+import './day-component.css';
 import CalendarEventComponent from './calendar-event-component/calendar-event-component';
 
 /**
@@ -20,7 +20,6 @@ const eventsIntoDayBuckets = function (eventList) {
         dayBucket[dayName] = dayBucket[dayName] || [];
         return dayBucket[dayName].push(event);
     });
-    console.log(dayBucket);
     return dayBucket;
 };
 
@@ -40,14 +39,18 @@ const CalendarDayComponent = ({ eventsInMonth }) => {
                     <span className="date-name">{dayName}</span>
                 </div>
                 <div className="events">
-                    {events.map((event) => {
-                        return (
-                            <CalendarEventComponent
-                                key={event.id}
-                                event={event}
-                            ></CalendarEventComponent>
-                        );
-                    })}
+                    <ul>
+                        {events.map((event) => {
+                            return (
+                                <div key={event.id}>
+                                    <CalendarEventComponent
+                                        key={event.id}
+                                        event={event}
+                                    ></CalendarEventComponent>
+                                </div>
+                            );
+                        })}
+                    </ul>
                 </div>
             </div>
         );

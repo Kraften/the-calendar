@@ -1,14 +1,30 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import styled from 'styled-components';
+import FirebaseEventsService from '../../../services/firebase/events.service';
+import AuthContext from '../../../store/auth-context';
 
 // Destructed prop { event } is an object containing information that this component renders.
 const CalendarEventComponent = ({ event }) => {
     const dateTime = moment(event.date);
+    const authCtx = useContext(AuthContext);
+
+    const listItemClick = (id) => {
+        FirebaseEventsService.deleteEventById(id);
+    };
     return (
-        <StyledEvent key={event.id} className="event flex-column">
-            <span className="event-time">{dateTime.format('hh:mm')}</span>
+        <StyledEvent className="event flex-column" key={event.id}>
+            <div className="a">
+                <span className="event-time">{dateTime.format('hh:mm')}</span>
+                {authCtx.isLoggedIn ? (
+                    <span className="x" onClick={() => listItemClick(event.id)}>
+                        X
+                    </span>
+                ) : (
+                    ''
+                )}
+            </div>
             <span className="event-name">{event.title}</span>
             <span>{event.comment}</span>
         </StyledEvent>
@@ -18,20 +34,27 @@ const CalendarEventComponent = ({ event }) => {
 /*--------------------------------------
 ------------Styled Components-----------
 --------------------------------------*/
-const StyledEvent = styled.div`
-    width: 300px;
-    height: 150px;
+const StyledEvent = styled.li`
     padding-left: 20px;
     margin: 7px;
     border-left: 11px solid black;
     font-family: 'montserrat-medium';
     transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
 
-    &:hover {
-        border-left: 25px solid black;
+    &:hover span.x {
+        display: flex;
+        // border-left: 25px solid black;
     }
+
+    .x {
+        display: none;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
     span {
         padding-bottom: 15px;
+        word-wrap: break-word;
     }
 
     .event-name {
@@ -41,9 +64,14 @@ const StyledEvent = styled.div`
         font-family: 'montserrat-semibold';
         font-size: 1.5em;
     }
+    .a {
+        display: flex;
+        justify-content: space-between;
+    }
 `;
 
 CalendarEventComponent.propTypes = {
+    listItemClick: PropTypes.any,
     event: PropTypes.shape({
         id: PropTypes.string,
         title: PropTypes.string,

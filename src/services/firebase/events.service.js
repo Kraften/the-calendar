@@ -1,6 +1,12 @@
 import { query } from 'firebase/database';
-import { dbFirestore } from '../firebase/firebase';
-import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../firebase/firebase';
+import {
+    collection,
+    addDoc,
+    where,
+    deleteDoc,
+    getDocs
+} from 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
 
 class FirebaseEventsService {
@@ -14,20 +20,40 @@ class FirebaseEventsService {
             id: uuidv4()
         };
         try {
-            const eventsCollection = collection(dbFirestore, 'events');
+            const eventsCollection = collection(db, 'events');
             const docRef = await addDoc(eventsCollection, eventWithId);
             console.log('Document written with ID: ', docRef.id);
         } catch (e) {
             console.error('Error adding document: ', e);
         }
     };
+
     /**
      * Firebase query that fetches all events.
      * @returns Query
      */
     getAllQuery = () => {
-        const allEventsQuery = query(collection(dbFirestore, 'events'));
+        const allEventsQuery = query(collection(db, 'events'));
         return allEventsQuery;
+    };
+
+    /**
+     * Deletes event by provided id Firebase db.
+     * @param {*} id String
+     */
+    deleteEventById = async (id) => {
+        if (id) {
+            const eventsCollection = collection(db, 'events');
+            const selectEventByIdQuery = query(
+                eventsCollection,
+                where('id', '==', id)
+            );
+            const querySnapshot = await getDocs(selectEventByIdQuery);
+            querySnapshot.forEach((doc) => {
+                deleteDoc(doc.ref);
+                console.log(doc.id, ' => ', doc.data());
+            });
+        }
     };
 }
 

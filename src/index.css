@@ -63,6 +63,133 @@ ul {
   opacity: 1;
 }
 
+input[type="datetime-local"] {
+  width: auto;
+  border-bottom: none;
+}
+
+input[type="submit"] {
+  user-select: none;
+  border-bottom: 1px solid white;
+} 
+
+input[type="datetime-local"]:before {
+  content: attr(placeholder) !important;
+  margin-right: 20px;
+} 
+
+input {
+  font-family: 'montserrat-medium';
+  font-size: 1em;
+  height: 65px;
+  padding: 0px 15px 0px 15px;
+  background: transparent;
+  outline: none;
+  color: white;
+  border: solid 1px white;
+  border-bottom: none;
+  transition: all 0.3s ease-in-out;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+}
+
+input:hover, input:focus {
+  background-color: white;
+  color: black;  
+}
+
+input::placeholder {
+  color: white;
+}
+
+input:hover::placeholder {
+  color: black;
+}
+
+textarea {
+  width: 470px;
+  max-width: 470px;
+  height: 110px;
+  max-height: 110px;
+  padding: 15px;
+  font-size: 1em;
+  background: transparent;
+  outline: none;
+  color: white;
+  font-family: 'montserrat-medium';
+  font-size: 1em;
+  border: solid 1px white;
+  border-bottom: none;
+  transition: all 0.3s ease-in-out;
+}
+
+textarea:hover, textarea:focus {
+  background-color: white;
+  color: black;
+}
+
+textarea::placeholder {
+  color: white;
+}
+
+textarea:hover::placeholder {
+  color: black;
+}
+
+h1 {
+  font-size: calc(3rem + 21vw);
+  letter-spacing: -0.04em;
+  display: contents;
+  opacity: 0.8;
+  margin-bottom: 12em;
+}
+
+h2 {
+  font-size: calc(1rem + 4vw);
+  letter-spacing: -0.04em;
+  display: contents;
+  opacity: 0.8;
+  margin-bottom: 12em;
+}
+
+/*--------------------------------------
+----------Responsive Components---------
+--------------------------------------*/
+@media only screen and (max-width: 600px) {
+  .landing-page {
+      height: 100vh; 
+      height: calc(var(--vh, 1vh) * 100);
+    }
+  h1 {
+      font-size: calc(1rem + 20vw);
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  h1 {
+      font-size: calc(1rem + 20vw);
+  }  
+}
+
+/*--------------------------------------
+---------------Animations---------------
+--------------------------------------*/
+@keyframes hide {
+  0% {
+      opacity: 0;
+  }
+  50% {
+      opacity: 50;
+  }
+  100% {
+      opacity: 100;
+  }
+}
+
+/*--------------------------------------
+------------------Fonts-----------------
+--------------------------------------*/
 @font-face {
     font-family: 'montserrat-light';
     src: local('montserrat-light'), url(./fonts//montserrat/Montserrat-Light.ttf) format('opentype');

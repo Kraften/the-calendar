@@ -1,6 +1,6 @@
 import React from 'react';
-import viewPortFix from '../../utils/utils';
 import LoginOverlay from '../../components/login-overlay-component/login-overlay-component';
+import { viewPortFix } from '../../utils/utils';
 import './landing-page.css';
 
 const LandingPage = () => {
@@ -13,7 +13,7 @@ const LandingPage = () => {
     };
 
     // TODO: is this being used (viewPortFix)?
-    viewPortFix(window.innerHeight);
+    viewPortFixrtFix(window.innerHeight);
     return (
         <div className="landing-page">
             <LoginOverlay

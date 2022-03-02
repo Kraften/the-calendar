@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import FirebaseEventsService from '../../../services/firebase/events.service';
 import styled from 'styled-components';
@@ -14,13 +14,19 @@ const EventForm = ({ isOpen }) => {
         formState: { errors }
     } = useForm();
 
+    const inputElement = useRef(null);
+
+    useEffect(() => {}, [inputElement]);
+
     const handleAddEvent = (event) => {
         FirebaseEventsService.saveNewEvent(event).then(() => {
             reset();
         });
     };
 
-    const handleError = (data) => console.log(data);
+    const handleFormError = (data) => {
+        throw new Error(data);
+    };
 
     // Settings for registration of the inputs in the form.
     const formOptions = {
@@ -29,81 +35,102 @@ const EventForm = ({ isOpen }) => {
     };
 
     return (
-        <StyledAddEventPanel
-            className={isOpen ? 'add-panel open' : 'add-panel'}
-        >
-            <StyledAddEventForm
+        <AddEventPanel className={isOpen ? 'open' : ''}>
+            <AddEventForm
                 className={isOpen ? 'open' : ''}
-                onSubmit={handleSubmit(handleAddEvent, handleError)}
+                onSubmit={handleSubmit(handleAddEvent, handleFormError)}
             >
-                <StyledLabel>
-                    <span className="input-name">Title:</span>
-                    <StyledInputWrapper>
-                        <StyledInput
-                            name="title"
-                            type="text"
-                            {...register('title', formOptions.title)}
-                        />
-                        <StyledAddEventWarningText>
-                            {errors?.title && errors.title.message}
-                        </StyledAddEventWarningText>
-                    </StyledInputWrapper>
-                </StyledLabel>
-                <StyledLabel>
-                    <span className="input-name">Date:</span>
-                    <StyledInputWrapper>
-                        <StyledInput
-                            name="date"
-                            type="datetime-local"
-                            {...register('date', formOptions.date)}
-                        />
-                        <StyledAddEventWarningText>
-                            {errors?.date && errors.date.message}
-                        </StyledAddEventWarningText>
-                    </StyledInputWrapper>
-                </StyledLabel>
-                <StyledLabel>
-                    <StyledTextareaWrapper>
-                        <span className="input-name">Comment:</span>
-                        <StyledTextarea
-                            name="comment"
-                            rows="10"
-                            {...register('comment')}
-                        ></StyledTextarea>
-                    </StyledTextareaWrapper>
-                </StyledLabel>
-                <input type="submit" value="Submit" />
-            </StyledAddEventForm>
-        </StyledAddEventPanel>
+                <h2 className={isOpen ? 'open' : ''}>Add event</h2>
+                <InputWrapper>
+                    <input
+                        name="title"
+                        placeholder="TITLE"
+                        type="text"
+                        ref={() => {
+                            inputElement.current = element;
+                            console.log('sdasda', inputElement.current);
+                        }}
+                        {...register('title', formOptions.title)}
+                    />
+                    <AddEventWarningText>
+                        {errors?.title && errors.title.message}
+                    </AddEventWarningText>
+                </InputWrapper>
+                <InputWrapper>
+                    <input
+                        name="date"
+                        placeholder="DATE"
+                        type="datetime-local"
+                        {...register('date', formOptions.date)}
+                    />
+                    <AddEventWarningText>
+                        {errors?.date && errors.date.message}
+                    </AddEventWarningText>
+                </InputWrapper>
+                <textarea
+                    name="comment"
+                    placeholder="COMMENT"
+                    type="textarea"
+                    rows="6"
+                    {...register('comment')}
+                ></textarea>
+                <input type="submit" value="LOGIN" />
+            </AddEventForm>
+        </AddEventPanel>
     );
 };
+
+const AddEventWarningText = styled.small`
+    font-size: 10px;
+    margin-left: 20px;
+`;
+
+const InputWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
+EventForm.propTypes = {
+    isOpen: PropTypes.bool
+};
+
+export default EventForm;
 
 /*--------------------------------------
 ------------Styled Components-----------
 --------------------------------------*/
-const StyledAddEventPanel = styled.div`
+const AddEventPanel = styled.div`
     margin: 25px;
     width: 60px;
     height: 60px;
     background-color: black;
     color: black;
     z-index: -1;
+    background-image: linear-gradient(150deg, #3c3a3a 0%, #000000 74%);
     transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+
+    @media (max-width: 768px) {
+        margin: 0;
+    }
 
     &.open {
         color: white;
         margin: 25px;
-        width: 600px;
-        height: 520px;
+        width: 750px;
+        height: auto;
         background-color: black;
         z-index: -1;
         display: flex;
         justify-content: center;
-        flex-direction: row;
         align-items: center;
+        @media (max-width: 1000px) {
+            width: 100vw;
+            margin: 0;
+        }
     }
 `;
-const StyledAddEventForm = styled.form`
+
+const AddEventForm = styled.form`
     display: none;
     animation: hide 3s;
     padding: 30px;
@@ -114,47 +141,7 @@ const StyledAddEventForm = styled.form`
     }
 `;
 
-const StyledLabel = styled.label`
-    display: flex;
-    justify-content: space-between;
-    padding-bottom: 20px;
-    font-size: 2em;
-    font-family: 'montserrat-medium';
-`;
-
-const StyledInput = styled.input`
-    all: unset;
-    width: 92%;
-    color: black;
-    background-color: white;
-    margin-left: 20px;
-    height: 50px;
-    padding: 0 10px;
-`;
-
-const StyledAddEventWarningText = styled.small`
-    font-size: 10px;
-    margin-left: 20px;
-    margin-top: 5px;
-`;
-
-const StyledInputWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-`;
-
-const StyledTextareaWrapper = styled.div`
-    flex-direction: column;
-    width: -webkit-fill-available;
-`;
-
-const StyledTextarea = styled.textarea`
-    font-size: 0.2em;
-    // width: -webkit-fill-available;
-`;
-
-EventForm.propTypes = {
-    isOpen: PropTypes.bool
-};
-
-export default EventForm;
+// const Header = styled.h2`
+//     /* display: none; */
+//     animation: hide 3s;
+// `;
