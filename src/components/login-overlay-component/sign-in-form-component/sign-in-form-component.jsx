@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext } from "react"
+import React, { useContext } from "react"
 import styled from "styled-components";
 import { auth } from '../../../services/firebase/firebase'
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -32,7 +32,6 @@ const SignInForm = (props) => {
         if(signInErr) { // Login fails
             const errorCode = signInErr.code;
             const errorMessage = signInErr.message;
-            console.log('Error', errorMessage)
             throw new Error(errorMessage)
         }
 
@@ -52,7 +51,7 @@ const SignInForm = (props) => {
         signIn(enteredEmail, enteredPassword)
     }
 
-    const handleFormError = (data) => console.log(data);
+    const handleFormError = (data) => {throw new Error(data)}
 
     return (
         <StyledForm 
@@ -60,13 +59,13 @@ const SignInForm = (props) => {
             <input 
                 name="email"
                 type="text"
-                value="johannes.kraft1@gmail.com" 
+                value="" 
                 {...register('email', formOptions.email)} 
             />
             <input
                 name="password"
                 type="password"
-                value="Walobalo3388!!"
+                value=""
                 {...register('password', formOptions.date)} 
             />
             <input 

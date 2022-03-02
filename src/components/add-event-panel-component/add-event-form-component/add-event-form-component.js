@@ -14,10 +14,6 @@ const EventForm = ({ isOpen }) => {
         formState: { errors }
     } = useForm();
 
-    const inputElement = useRef(null);
-
-    useEffect(() => {}, [inputElement]);
-
     const handleAddEvent = (event) => {
         FirebaseEventsService.saveNewEvent(event).then(() => {
             reset();
@@ -46,10 +42,7 @@ const EventForm = ({ isOpen }) => {
                         name="title"
                         placeholder="TITLE"
                         type="text"
-                        ref={() => {
-                            inputElement.current = element;
-                            console.log('sdasda', inputElement.current);
-                        }}
+                        autoFocus
                         {...register('title', formOptions.title)}
                     />
                     <AddEventWarningText>
@@ -140,8 +133,3 @@ const AddEventForm = styled.form`
         flex-direction: column;
     }
 `;
-
-// const Header = styled.h2`
-//     /* display: none; */
-//     animation: hide 3s;
-// `;
