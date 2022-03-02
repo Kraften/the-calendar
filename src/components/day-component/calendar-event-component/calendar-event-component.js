@@ -15,8 +15,8 @@ const CalendarEventComponent = ({ event }) => {
     };
     return (
         <StyledEvent className="event flex-column" key={event.id}>
-            <div className="a">
-                <span className="event-time">{dateTime.format('hh:mm')}</span>
+            <div className="title-and-x-row">
+                <span className="event-name">{event.title}</span>
                 {authCtx.isLoggedIn ? (
                     <span className="x" onClick={() => listItemClick(event.id)}>
                         X
@@ -25,7 +25,8 @@ const CalendarEventComponent = ({ event }) => {
                     ''
                 )}
             </div>
-            <span className="event-name">{event.title}</span>
+            <span className="event-time">{dateTime.format('HH:MM')}</span>
+
             <span>{event.comment}</span>
         </StyledEvent>
     );
@@ -64,7 +65,7 @@ const StyledEvent = styled.li`
         font-family: 'montserrat-semibold';
         font-size: 1.5em;
     }
-    .a {
+    .title-and-x-row {
         display: flex;
         justify-content: space-between;
     }
