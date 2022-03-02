@@ -108,7 +108,7 @@ const AddEventPanel = styled.div`
     &.open {
         color: white;
         margin: 25px;
-        width: 10px;
+        width: auto;
         height: auto;
         background-color: black;
         z-index: -1;
@@ -126,7 +126,7 @@ const AddEventPanel = styled.div`
 const AddEventForm = styled.form`
     display: none;
     animation: hide 3s;
-    padding: 30px;
+    padding: 30px 60px 30px 60px;
 
     &.open {
         display: flex;
