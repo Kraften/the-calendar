@@ -67,7 +67,7 @@ const EventForm = ({ isOpen }) => {
                     rows="6"
                     {...register('comment')}
                 ></textarea>
-                <input type="submit" value="LOGIN" />
+                <input type="submit" value="SUBMIT" />
             </AddEventForm>
         </AddEventPanel>
     );

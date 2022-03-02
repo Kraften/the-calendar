@@ -70,7 +70,7 @@ const SignInForm = (props) => {
             />
             <input 
                 type="submit" 
-                value="SUBMIT"
+                value="LOGIN"
             />
         </StyledForm>
     )
