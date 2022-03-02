@@ -25,7 +25,7 @@ const CalendarEventComponent = ({ event }) => {
                     ''
                 )}
             </div>
-            <span className="event-time">{dateTime.format('HH:MM')}</span>
+            <span className="event-time">{dateTime.format('HH:mm')}</span>
 
             <span>{event.comment}</span>
         </StyledEvent>
