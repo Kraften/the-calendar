@@ -57,18 +57,20 @@ const SignInForm = (props) => {
         <StyledForm 
             onSubmit={handleSubmit(onSubmitClick, handleFormError)}>
             <input 
+                placeholder="EMAIL"
                 name="email"
                 type="text"
                 {...register('email', formOptions.email)} 
             />
             <input
+                placeholder="PASSWORD"
                 name="password"
                 type="password"
                 {...register('password', formOptions.date)} 
             />
             <input 
                 type="submit" 
-                value="Submit"
+                value="SUBMIT"
             />
         </StyledForm>
     )
