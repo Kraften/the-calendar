@@ -59,13 +59,11 @@ const SignInForm = (props) => {
             <input 
                 name="email"
                 type="text"
-                value="" 
                 {...register('email', formOptions.email)} 
             />
             <input
                 name="password"
                 type="password"
-                value=""
                 {...register('password', formOptions.date)} 
             />
             <input 
