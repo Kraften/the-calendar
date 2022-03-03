@@ -38,12 +38,12 @@ const CalendarPage = () => {
         toggleOptionsMenu();
     };
 
-    const toggleAddEventPanel = () => {
-        setIsPanelOpen(!isPanelOpen);
-    };
-
     const toggleOptionsMenu = () => {
         setIsOptionsMenuOpen(!isOptionsMenuOpen);
+    };
+
+    const toggleAddEventPanel = () => {
+        setIsPanelOpen(!isPanelOpen);
     };
 
     const eventsIntoMonthBuckets = () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SignInForm from './sign-in-form-component/sign-in-form-component.jsx';
+import SignInForm from './sign-in-form-component/sign-in-form-component.js';
 import './login-overlay-component.css';
 
 const LoginOverlay = (props) => {

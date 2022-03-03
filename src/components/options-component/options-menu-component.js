@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import AuthContext from '../../store/auth-context';
@@ -8,20 +8,28 @@ const OptionsMenu = ({ isMenuOpen, toggleOptionsMenuChild }) => {
     const authCtx = useContext(AuthContext);
     const [showLogin, setShowLogin] = useState(false);
 
-    const handleCloseFromChild = (data) => {
+    const closeMenuAfterLoginFromChild = (data) => {
         setShowLogin(data);
     };
+
+    useEffect(() => {
+        // Make sure login form closes when options menu closes.
+        if (!isMenuOpen) {
+            setShowLogin(false);
+        }
+    }, [isMenuOpen]);
+
     const MenuItems = () => {
         const onLogoutClick = () => {
             authCtx.logout();
         };
-        const onLoginClick = () => {
+        const onClickLoginMenuOpen = () => {
             setShowLogin(!showLogin);
         };
         return (
             <Menu>
                 {!authCtx.isLoggedIn ? (
-                    <MenuItem onClick={onLoginClick}>Login</MenuItem>
+                    <MenuItem onClick={onClickLoginMenuOpen}>Login</MenuItem>
                 ) : (
                     <MenuItem onClick={onLogoutClick}>Logout</MenuItem>
                 )}
@@ -35,7 +43,7 @@ const OptionsMenu = ({ isMenuOpen, toggleOptionsMenuChild }) => {
                 <SignInForm
                     toggleOptionsMenuChild={toggleOptionsMenuChild}
                     isMenuOpen={isMenuOpen}
-                    handleCloseFromChild={handleCloseFromChild}
+                    closeMenuAfterLogin={closeMenuAfterLoginFromChild}
                 ></SignInForm>
             ) : (
                 ''
