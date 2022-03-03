@@ -74,6 +74,7 @@ const Day = styled.div`
 
     &.eventIsToday {
         padding-left: 10px;
+        padding-right: 10px;
         background-image: linear-gradient(328deg, #3c3a3a 0%, #000000 74%);
         color: white;
     }
