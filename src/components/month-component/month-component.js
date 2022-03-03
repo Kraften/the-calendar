@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import CalendarDayComponent from '../day-component/day-component';
+import DayComponent from '../day-component/day-component';
 import './month-component.css';
 
 /**
@@ -30,10 +30,10 @@ function Month(props) {
         return (
             <div className="flex-column">
                 <span className="month-name">{props.monthName}</span>
-                <CalendarDayComponent
+                <DayComponent
                     key={eventsInMonth}
                     eventsInMonth={eventsInMonth}
-                ></CalendarDayComponent>
+                ></DayComponent>
             </div>
         );
     } else {

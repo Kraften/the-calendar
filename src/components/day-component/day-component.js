@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import styled from 'styled-components';
 import CalendarEventComponent from './calendar-event-component/calendar-event-component';
+import SwipableList from '../swipable-list-component/swipeable-list-component';
+import SwipeableListItem from '../swipable-list-component/swipeable-lits-item-component';
 
 /**
  * @param eventList list of events.
@@ -22,7 +24,7 @@ const eventsIntoDayBuckets = (eventList) => {
     return dayBucket;
 };
 
-const CalendarDayComponent = ({ eventsInMonth }) => {
+const DayComponent = ({ eventsInMonth }) => {
     var dayBucket = eventsIntoDayBuckets(eventsInMonth);
     const daysInMonth = [];
     Object.entries(dayBucket).map((dayBucket) => {
@@ -42,19 +44,30 @@ const CalendarDayComponent = ({ eventsInMonth }) => {
                     <span className="date-name">{dayName}</span>
                 </div>
                 <div className="events">
-                    <ul>
+                    <SwipableList>
                         {events.map((event) => {
+                            const a = (
+                                <CalendarEventComponent
+                                    eventIsToday={eventIsToday}
+                                    key={event.id}
+                                    event={event}
+                                ></CalendarEventComponent>
+                            );
                             return (
-                                <div key={event.id}>
-                                    <CalendarEventComponent
-                                        eventIsToday={eventIsToday}
-                                        key={event.id}
-                                        event={event}
-                                    ></CalendarEventComponent>
-                                </div>
+                                <SwipeableListItem key={event.id}>
+                                    {a}
+                                </SwipeableListItem>
+
+                                // <div key={event.id}>
+                                //     <CalendarEventComponent
+                                //         eventIsToday={eventIsToday}
+                                //         key={event.id}
+                                //         event={event}
+                                //     ></CalendarEventComponent>
+                                // </div>
                             );
                         })}
-                    </ul>
+                    </SwipableList>
                 </div>
             </Day>
         );
@@ -106,8 +119,8 @@ const Day = styled.div`
     }
 `;
 
-CalendarDayComponent.propTypes = {
+DayComponent.propTypes = {
     eventsInMonth: PropTypes.array
 };
 
-export default CalendarDayComponent;
+export default DayComponent;

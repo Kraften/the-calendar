@@ -8,6 +8,8 @@ import FirebaseEventsService from '../../services/firebase/events.service';
 import './calendar-page.css';
 import { onSnapshot } from 'firebase/firestore';
 import AuthContext from '../../store/auth-context';
+import SwipableList from '../../components/swipable-list-component/swipeable-list-component';
+import SwipeableListItem from '../../components/swipable-list-component/swipeable-lits-item-component';
 
 const CalendarPage = () => {
     const authCtx = useContext(AuthContext);
@@ -45,6 +47,13 @@ const CalendarPage = () => {
     const toggleAddEventPanel = () => {
         setIsPanelOpen(!isPanelOpen);
     };
+
+    const background = <span>Archive</span>;
+    const fakeContent = (
+        <div className="FakeContent">
+            <span>Swipe to delete</span>
+        </div>
+    );
 
     const eventsIntoMonthBuckets = () => {
         const monthList = moment.months();
@@ -91,6 +100,7 @@ const CalendarPage = () => {
                 isMenuOpen={isOptionsMenuOpen}
                 toggleOptionsMenuChild={toggleOptionsMenuChild}
             />
+
             {isLoading ? (
                 <h1>Loading</h1>
             ) : (
@@ -152,6 +162,7 @@ const TopMenu = styled.div`
         font-size: 4em;
     }
 `;
+
 const OptionsButton = styled.button`
     all: unset;
     cursor: pointer;
@@ -159,6 +170,7 @@ const OptionsButton = styled.button`
     font-size: 2em;
     font-weight: bold;
 `;
+
 const Nothing = styled.div`
     user-select: none;
     font-size: calc(1rem + 16vw);
