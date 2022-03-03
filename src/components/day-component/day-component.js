@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import './day-component.css';
+import styled from 'styled-components';
 import CalendarEventComponent from './calendar-event-component/calendar-event-component';
 
 /**
@@ -10,9 +10,8 @@ import CalendarEventComponent from './calendar-event-component/calendar-event-co
  *
  * exp. { Friday 01: [ {…}, {…} ] }
  */
-const eventsIntoDayBuckets = function (eventList) {
+const eventsIntoDayBuckets = (eventList) => {
     var dayBucket = {};
-    //
     eventList.map((event) => {
         let dayName = `${moment(event.date).format('dddd')} ${moment(
             event.date
@@ -32,8 +31,12 @@ const CalendarDayComponent = ({ eventsInMonth }) => {
         const dayName = day[0];
         const dayNumber = day[1];
 
+        const today = moment(new Date());
+        const eventTOday = moment(new Date()).set('date', day[1]);
+        const eventIsToday = today.isSame(eventTOday, 'day');
+
         return daysInMonth.push(
-            <div className="day" key={dayNumber}>
+            <Day key={dayNumber} className={eventIsToday ? 'eventIsToday' : ''}>
                 <div className="flex-column">
                     <span className="date-number">{dayNumber}</span>
                     <span className="date-name">{dayName}</span>
@@ -44,6 +47,7 @@ const CalendarDayComponent = ({ eventsInMonth }) => {
                             return (
                                 <div key={event.id}>
                                     <CalendarEventComponent
+                                        eventIsToday={eventIsToday}
                                         key={event.id}
                                         event={event}
                                     ></CalendarEventComponent>
@@ -52,11 +56,54 @@ const CalendarDayComponent = ({ eventsInMonth }) => {
                         })}
                     </ul>
                 </div>
-            </div>
+            </Day>
         );
     });
     return <div>{daysInMonth}</div>;
 };
+
+/*--------------------------------------
+------------Styled Components-----------
+--------------------------------------*/
+const Day = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-top: 1px solid black;
+    padding-top: 15px;
+    padding-bottom: 15px;
+
+    &.eventIsToday {
+        padding-left: 10px;
+        background-image: linear-gradient(328deg, #3c3a3a 0%, #000000 74%);
+        color: white;
+    }
+
+    .day {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border-top: 1px solid black;
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+
+    .hour-row {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+    }
+
+    .date-number {
+        font-size: 4rem;
+        font-family: 'montserrat-medium';
+        margin-top: 20px;
+        margin-bottom: 20px;
+        transition: all 0.2s ease-in-out;
+        cursor: pointer;
+    }
+
+    .date-name {
+        font-family: 'montserrat-light';
+    }
+`;
 
 CalendarDayComponent.propTypes = {
     eventsInMonth: PropTypes.array

@@ -6,16 +6,16 @@ import SignInForm from '../login-overlay-component/sign-in-form-component/sign-i
 
 const OptionsMenu = ({ isMenuOpen, toggleOptionsMenuChild }) => {
     const authCtx = useContext(AuthContext);
-    const [showLogin, setShowLogin] = useState(false);
+    const [showLoginForm, setShowLoginForm] = useState(false);
 
     const closeMenuAfterLoginFromChild = (data) => {
-        setShowLogin(data);
+        setShowLoginForm(data);
     };
 
     useEffect(() => {
         // Make sure login form closes when options menu closes.
         if (!isMenuOpen) {
-            setShowLogin(false);
+            setShowLoginForm(false);
         }
     }, [isMenuOpen]);
 
@@ -24,7 +24,7 @@ const OptionsMenu = ({ isMenuOpen, toggleOptionsMenuChild }) => {
             authCtx.logout();
         };
         const onClickLoginMenuOpen = () => {
-            setShowLogin(!showLogin);
+            setShowLoginForm(!showLoginForm);
         };
         return (
             <Menu>
@@ -39,7 +39,7 @@ const OptionsMenu = ({ isMenuOpen, toggleOptionsMenuChild }) => {
     return (
         <Container className={isMenuOpen ? 'open' : ''}>
             {MenuItems()}
-            {showLogin ? (
+            {showLoginForm ? (
                 <SignInForm
                     toggleOptionsMenuChild={toggleOptionsMenuChild}
                     isMenuOpen={isMenuOpen}
