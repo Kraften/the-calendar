@@ -67,11 +67,15 @@ const CalendarDayComponent = ({ eventsInMonth }) => {
 --------------------------------------*/
 const Day = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 0.5fr 1fr;
   border-top: 1px solid black;
   padding-top: 15px;
   padding-bottom: 15px;
 
+  @media only screen and (max-width: 600px) {
+    grid-template-columns: auto 1fr;
+    grid-gap: 15px;
+  }
   &.eventIsToday {
     padding-left: 10px;
     padding-right: 10px;
@@ -96,7 +100,6 @@ const Day = styled.div`
     font-size: 4rem;
     font-family: 'montserrat-medium';
     margin-top: 20px;
-    margin-bottom: 20px;
     transition: all 0.2s ease-in-out;
     cursor: pointer;
   }
