@@ -8,10 +8,6 @@ const OptionsMenu = ({ isMenuOpen, toggleOptionsMenuChild }) => {
     const authCtx = useContext(AuthContext);
     const [showLoginForm, setShowLoginForm] = useState(false);
 
-    const closeMenuAfterLoginFromChild = (data) => {
-        setShowLoginForm(data);
-    };
-
     useEffect(() => {
         // Make sure login form closes when options menu closes.
         if (!isMenuOpen) {
@@ -29,25 +25,25 @@ const OptionsMenu = ({ isMenuOpen, toggleOptionsMenuChild }) => {
         return (
             <Menu>
                 {!authCtx.isLoggedIn ? (
-                    <MenuItem onClick={onClickLoginMenuOpen}>Login</MenuItem>
+                    <div>
+                        <MenuItem onClick={onClickLoginMenuOpen}>
+                            Login
+                        </MenuItem>
+                        <SignInForm
+                            show={showLoginForm}
+                            toggleOptionsMenuChild={toggleOptionsMenuChild}
+                        ></SignInForm>
+                    </div>
                 ) : (
                     <MenuItem onClick={onLogoutClick}>Logout</MenuItem>
                 )}
+                <MenuItem onClick={onLogoutClick}>About</MenuItem>
             </Menu>
         );
     };
     return (
         <Container className={isMenuOpen ? 'open' : ''}>
             {MenuItems()}
-            {showLoginForm ? (
-                <SignInForm
-                    toggleOptionsMenuChild={toggleOptionsMenuChild}
-                    isMenuOpen={isMenuOpen}
-                    closeMenuAfterLogin={closeMenuAfterLoginFromChild}
-                ></SignInForm>
-            ) : (
-                ''
-            )}
         </Container>
     );
 };

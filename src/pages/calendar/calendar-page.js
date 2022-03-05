@@ -17,22 +17,31 @@ const CalendarPage = () => {
     const [year, setYear] = useState('');
     const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        const query = FirebaseEventsService.getAllQuery();
-        onSnapshot(query, (querySnap) => {
-            if (querySnap.docs.length == 0) {
-                setIsLoading(true);
-                setCalendarEvents(querySnap.docs.map((e) => e.data()));
-                setYear(moment(new Date()).format('YYYY'));
-                setIsLoading(false);
-            } else {
-                setIsLoading(true);
-                setYear(moment(querySnap.docs[0].data().date).format('YYYY'));
-                setCalendarEvents(querySnap.docs.map((e) => e.data()));
-                setIsLoading(false);
-            }
-        });
-    }, []);
+    useEffect(
+        () => {
+            const query = FirebaseEventsService.getAllQuery();
+            onSnapshot(query, (querySnap) => {
+                if (querySnap.docs.length == 0) {
+                    setIsLoading(true);
+                    setCalendarEvents(querySnap.docs.map((e) => e.data()));
+                    setYear(moment(new Date()).format('YYYY'));
+                    setIsLoading(false);
+                } else {
+                    setIsLoading(true);
+                    setYear(
+                        moment(querySnap.docs[0].data().date).format('YYYY')
+                    );
+                    setCalendarEvents(querySnap.docs.map((e) => e.data()));
+                    setIsLoading(false);
+                }
+            });
+        },
+        [
+            // TODO: Check if active day updates after new day starts at 00:00
+            // Reloads component constantly.
+            // calendarEvents
+        ]
+    );
 
     const toggleOptionsMenuChild = () => {
         toggleOptionsMenu();
@@ -57,7 +66,6 @@ const CalendarPage = () => {
                     if (month === monthOfEvent) {
                         eventsByMonth.push(event);
                     }
-                    return eventsByMonth;
                 });
                 return (
                     <li key={month}>

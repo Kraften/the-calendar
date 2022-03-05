@@ -7,13 +7,8 @@ import { useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import { handlePromise } from '../../../utils/utils';
 
-const SignInForm = ({
-    isMenuOpen,
-    toggleOptionsMenuChild,
-    closeMenuAfterLogin
-}) => {
+const SignInForm = ({ show, toggleOptionsMenuChild }) => {
     const authCtx = useContext(AuthContext);
-    const [a, setA] = useState(isMenuOpen);
     // Destructuring of features from useForm package.
     const {
         register,
@@ -45,9 +40,9 @@ const SignInForm = ({
             // Login success
             const user = userCredentials.user;
             authCtx.login(user.accessToken);
-            const isMenuOpenLocal = isMenuOpen;
+            const isMenuOpenLocal = show;
             reset(); // Reset the form.'
-            closeMenuAfterLogin(!isMenuOpenLocal);
+            // This closes the Options menu after successful login.
             toggleOptionsMenuChild();
         }
     };
@@ -63,7 +58,7 @@ const SignInForm = ({
     };
 
     {
-        // if (isMenuOpen) {
+        if (!show) return null;
         return (
             <StyledForm onSubmit={handleSubmit(onSubmitClick, handleFormError)}>
                 <input
@@ -81,16 +76,11 @@ const SignInForm = ({
                 <input type="submit" value="LOGIN" />
             </StyledForm>
         );
-        // }
-        //  else {
-        //     return <div></div>;
-        // }
     }
 };
 
 SignInForm.propTypes = {
-    // TODO: Add correct propType here!
-    isMenuOpen: PropTypes.any,
+    show: PropTypes.bool,
     closeMenuAfterLogin: PropTypes.func,
     toggleOptionsMenuChild: PropTypes.func
 };
