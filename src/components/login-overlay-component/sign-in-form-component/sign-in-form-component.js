@@ -8,81 +8,81 @@ import PropTypes from 'prop-types';
 import { handlePromise } from '../../../utils/utils';
 
 const SignInForm = ({ show, toggleOptionsMenuChild }) => {
-    const authCtx = useContext(AuthContext);
-    // Destructuring of features from useForm package.
-    const {
-        register,
-        handleSubmit,
-        reset,
-        getValues,
-        formState: { errors }
-    } = useForm();
+  const authCtx = useContext(AuthContext);
+  // Destructuring of features from useForm package.
+  const {
+    register,
+    handleSubmit,
+    reset,
+    getValues,
+    formState: { errors }
+  } = useForm();
 
-    // Settings for registration of the inputs in the form.
-    const formOptions = {
-        email: { required: 'Email is required' },
-        password: { required: 'Password is required' }
-    };
+  // Settings for registration of the inputs in the form.
+  const formOptions = {
+    email: { required: 'Email is required' },
+    password: { required: 'Password is required' }
+  };
 
-    const signIn = async (email, password) => {
-        let [userCredentials, signInErr] = await handlePromise(
-            signInWithEmailAndPassword(auth, email, password)
-        );
+  const signIn = async (email, password) => {
+    let [userCredentials, signInErr] = await handlePromise(
+      signInWithEmailAndPassword(auth, email, password)
+    );
 
-        if (signInErr) {
-            // Login fails
-            const errorCode = signInErr.code;
-            const errorMessage = signInErr.message;
-            console.log(errorCode, errorMessage);
-        }
-
-        if (userCredentials) {
-            // Login success
-            const user = userCredentials.user;
-            authCtx.login(user.accessToken);
-            const isMenuOpenLocal = show;
-            reset(); // Reset the form.'
-            // This closes the Options menu after successful login.
-            toggleOptionsMenuChild();
-        }
-    };
-
-    const onSubmitClick = () => {
-        const enteredEmail = getValues('email');
-        const enteredPassword = getValues('password');
-        signIn(enteredEmail, enteredPassword);
-    };
-
-    const handleFormError = (error) => {
-        console.log('Login missing values:', error);
-    };
-
-    {
-        if (!show) return null;
-        return (
-            <StyledForm onSubmit={handleSubmit(onSubmitClick, handleFormError)}>
-                <input
-                    placeholder="EMAIL"
-                    name="email"
-                    type="text"
-                    {...register('email', formOptions.email)}
-                />
-                <input
-                    placeholder="PASSWORD"
-                    name="password"
-                    type="password"
-                    {...register('password', formOptions.password)}
-                />
-                <input type="submit" value="LOGIN" />
-            </StyledForm>
-        );
+    if (signInErr) {
+      // Login fails
+      const errorCode = signInErr.code;
+      const errorMessage = signInErr.message;
+      console.log(errorCode, errorMessage);
     }
+
+    if (userCredentials) {
+      // Login success
+      const user = userCredentials.user;
+      authCtx.login(user.accessToken);
+      const isMenuOpenLocal = show;
+      reset(); // Reset the form.'
+      // This closes the Options menu after successful login.
+      toggleOptionsMenuChild();
+    }
+  };
+
+  const onSubmitClick = () => {
+    const enteredEmail = getValues('email');
+    const enteredPassword = getValues('password');
+    signIn(enteredEmail, enteredPassword);
+  };
+
+  const handleFormError = (error) => {
+    console.log('Login missing values:', error);
+  };
+
+  {
+    if (!show) return null;
+    return (
+      <StyledForm onSubmit={handleSubmit(onSubmitClick, handleFormError)}>
+        <input
+          placeholder="EMAIL"
+          name="email"
+          type="text"
+          {...register('email', formOptions.email)}
+        />
+        <input
+          placeholder="PASSWORD"
+          name="password"
+          type="password"
+          {...register('password', formOptions.password)}
+        />
+        <input type="submit" value="LOGIN" />
+      </StyledForm>
+    );
+  }
 };
 
 SignInForm.propTypes = {
-    show: PropTypes.bool,
-    closeMenuAfterLogin: PropTypes.func,
-    toggleOptionsMenuChild: PropTypes.func
+  show: PropTypes.bool,
+  closeMenuAfterLogin: PropTypes.func,
+  toggleOptionsMenuChild: PropTypes.func
 };
 
 export default SignInForm;
@@ -91,6 +91,6 @@ export default SignInForm;
 ------------Styled Components-----------
 --------------------------------------*/
 const StyledForm = styled.form`
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 `;
