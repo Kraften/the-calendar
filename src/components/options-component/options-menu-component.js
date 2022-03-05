@@ -72,8 +72,23 @@ const Container = styled.div`
   align-items: center;
   transition: all 0.6s;
   background-color: #2d3436;
-  background-image: linear-gradient(315deg, #2d3436 0%, #000000 74%);
 
+  background: radial-gradient(
+    circle at 414% 336%,
+    #ffffff,
+    #f8f8f8,
+    #e6e6e6,
+    #cbcbcb,
+    #ababab,
+    #888888,
+    #666666,
+    #474747,
+    #2d2d2d,
+    #191919,
+    #080808,
+    #000000
+  );
+  /* background-image: linear-gradient(315deg, #2d3436 0%, #000000 74%); */
   &.open {
     display: flex;
     flex-direction: column;
