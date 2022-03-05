@@ -14,10 +14,10 @@ function Month(props) {
     // Map events into month buckets.
     props.events.map((event) => {
         const monthName = moment(event.date).format('MMMM');
-        if (monthName === props.monthName) {
-            eventsInMonth.push(event);
-        }
+        const sameMonthNames = monthName == props.monthName ? true : false;
+        if (!sameMonthNames) return;
 
+        eventsInMonth.push(event);
         // Sort events in moth bucket on date, ascending.
         eventsInMonth.sort(
             (a, b) => moment(a.date).valueOf() - moment(b.date).valueOf()
@@ -26,19 +26,16 @@ function Month(props) {
 
     // Checks if month has events, if not we dont draw month at all.
     const monthHasEvents = eventsInMonth.length > 0 ? true : false;
-    if (monthHasEvents) {
-        return (
-            <div className="flex-column">
-                <span className="month-name">{props.monthName}</span>
-                <CalendarDayComponent
-                    key={eventsInMonth}
-                    eventsInMonth={eventsInMonth}
-                ></CalendarDayComponent>
-            </div>
-        );
-    } else {
-        return null;
-    }
+    if (!monthHasEvents) return null;
+    return (
+        <div className="flex-column">
+            <span className="month-name">{props.monthName}</span>
+            <CalendarDayComponent
+                key={eventsInMonth}
+                eventsInMonth={eventsInMonth}
+            ></CalendarDayComponent>
+        </div>
+    );
 }
 
 Month.propTypes = {
