@@ -1,11 +1,11 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { auth } from '../../../services/firebase/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import AuthContext from '../../../store/auth-context';
 import { useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
-import { handlePromise } from '../../../utils/utils';
+import { handlePromise } from '../../../functions/handle-promis';
 
 const SignInForm = ({ show, toggleOptionsMenuChild }) => {
   const authCtx = useContext(AuthContext);
