@@ -13,9 +13,11 @@ import CalendarEventComponent from './calendar-event-component/calendar-event-co
 const eventsIntoDayBuckets = (eventList) => {
   var dayBucket = {};
   eventList.map((event) => {
+    const today = moment(new Date());
+    const eventIsToday = today.isSame(event.date, 'day');
     let dayName = `${moment(event.date).format('dddd')} ${moment(
       event.date
-    ).format('DD')}`;
+    ).format('DD')} ${eventIsToday}`;
     dayBucket[dayName] = dayBucket[dayName] || [];
     return dayBucket[dayName].push(event);
   });
@@ -30,10 +32,7 @@ const CalendarDayComponent = ({ eventsInMonth }) => {
     const day = dayBucket[0].split(' ');
     const dayName = day[0];
     const dayNumber = day[1];
-
-    const today = moment(new Date());
-    const eventTOday = moment(new Date()).set('date', day[1]);
-    const eventIsToday = today.isSame(eventTOday, 'day');
+    const eventIsToday = String(day[2]) == 'true';
 
     return daysInMonth.push(
       <Day key={dayNumber} className={eventIsToday ? 'eventIsToday' : ''}>
@@ -101,7 +100,6 @@ const Day = styled.div`
     font-family: 'montserrat-medium';
     margin-top: 20px;
     transition: all 0.2s ease-in-out;
-    cursor: pointer;
   }
 
   .date-name {

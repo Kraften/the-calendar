@@ -108,16 +108,19 @@ const AddEventPanel = styled.div`
   &.open {
     color: white;
     margin: 25px;
-    width: auto;
-    height: auto;
-    background-color: black;
-    z-index: -1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 50vw;
+    height: 56vh;
+    /* width: auto; */
+    /* height: auto; */
+    /* background-color: black; */
+    /* z-index: -1; */
+    /* display: flex; */
+    /* justify-content: center; */
+    /* align-items: center;  */
 
-    @media (max-width: 1000px) {
+    @media (max-width: 768px) {
       width: 100vw;
+      height: 56vh;
       margin: 0;
     }
   }
@@ -126,11 +129,12 @@ const AddEventPanel = styled.div`
 const AddEventForm = styled.form`
   display: none;
   animation: hide 3s;
-  padding: 30px 60px 30px 60px;
+  padding: 30px 0 30px 0;
 
   &.open {
     display: flex;
     flex-direction: column;
+    margin: 0 60px 0 60px;
 
     @media (max-width: 500px) {
       width: 75%;
