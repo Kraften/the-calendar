@@ -30,6 +30,7 @@ const CalendarPage = () => {
     setCalendarEvents(events.map((e) => e.data()));
     setIsLoading(false);
   };
+
   useEffect(
     () => {
       const query = FirebaseEventsService.getAllQuery();

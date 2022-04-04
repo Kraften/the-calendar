@@ -9,13 +9,19 @@ import AuthContext from '../../../store/auth-context';
 const CalendarEventComponent = ({ event, eventIsToday }) => {
   const dateTime = moment(event.date);
   const authCtx = useContext(AuthContext);
+  const today = moment(new Date());
   const listItemClick = (id) => {
     FirebaseEventsService.deleteEventById(id);
   };
+
   return (
     <StyledEvent
       className={
-        eventIsToday ? 'event flex-column eventIsToday' : 'event flex-column'
+        !today.isSameOrBefore(event.date, 'day')
+          ? 'eventIsOld'
+          : 'null' && eventIsToday
+          ? 'event flex-column eventIsToday'
+          : 'event flex-column'
       }
       key={event.id}
     >
@@ -48,6 +54,10 @@ const StyledEvent = styled.li`
 
   &.eventIsToday {
     border-left: 11px solid white;
+  }
+
+  &.eventIsOld {
+    opacity: 0.1;
   }
 
   &:hover span.x {

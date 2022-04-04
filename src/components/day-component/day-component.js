@@ -8,7 +8,7 @@ import CalendarEventComponent from './calendar-event-component/calendar-event-co
  * @param eventList list of events.
  * @returns Bucket named by day and date and holds array of events on that day.
  *
- * exp. { Friday 01: [ {…}, {…} ] }
+ * example. { Friday 01: [ {…}, {…} ] }
  */
 const eventsIntoDayBuckets = (eventList) => {
   var dayBucket = {};
@@ -27,6 +27,7 @@ const eventsIntoDayBuckets = (eventList) => {
 const CalendarDayComponent = ({ eventsInMonth }) => {
   var dayBucket = eventsIntoDayBuckets(eventsInMonth);
   const daysInMonth = [];
+
   Object.entries(dayBucket).map((dayBucket) => {
     const events = dayBucket[1];
     const day = dayBucket[0].split(' ');
@@ -75,6 +76,11 @@ const Day = styled.div`
     grid-template-columns: auto 1fr;
     grid-gap: 15px;
   }
+
+  &.oldDays {
+    opacity: 0.1;
+  }
+
   &.eventIsToday {
     padding-left: 10px;
     padding-right: 10px;
