@@ -120,12 +120,29 @@ const CalendarPage = () => {
     );
   };
 
+  const topMenu = () => {
+    const today = moment(new Date());
+    return (
+      <TopMenu>
+        <div className="first-row">
+          <span className="year">{year}</span>
+          <OptionsButton onClick={toggleOptionsMenu}>Options</OptionsButton>
+        </div>
+        <div className="second-row">
+          <span className="day-name bold">Today</span>
+          <div>
+            <span className="day-name">{today.format('MM')} - </span>
+            <span className="day-name">{today.format('DD')} </span>
+            <span className="day-name">{today.format('dddd')}</span>
+          </div>
+        </div>
+      </TopMenu>
+    );
+  };
+
   return (
     <div>
-      <TopMenu className="top-year">
-        <span className="year">{year}</span>
-        <OptionsButton onClick={toggleOptionsMenu}>Options</OptionsButton>
-      </TopMenu>
+      {topMenu()}
       <OptionsMenu
         isMenuOpen={isOptionsMenuOpen}
         toggleOptionsMenuChild={toggleOptionsMenuChild}
@@ -149,18 +166,29 @@ const TopMenu = styled.div`
   user-select: none;
   display: flex;
   z-index: 2;
-  justify-content: space-between;
+  flex-direction: column;
   position: sticky;
   background: white;
   padding: 16px 20px;
   top: 0px;
   border-bottom: 1px solid whitesmoke;
 
-  span {
-    font-family: 'Montserrat-semibold';
-    font-size: 4em;
+  .first-row {
+    display: flex;
+    justify-content: space-between;
+
+    .year {
+      font-family: 'Montserrat-semibold';
+      font-size: 4em;
+    }
+  }
+
+  .second-row {
+    font-size: 1em;
+    font-family: 'montserrat-light';
   }
 `;
+
 const OptionsButton = styled.button`
   all: unset;
   cursor: pointer;

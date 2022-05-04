@@ -26,6 +26,10 @@ ul {
   flex-direction: row;
 }
 
+.bold {
+  font-weight: bold;
+}
+
 .pin-center {
   align-items: center;
   justify-content: center;
