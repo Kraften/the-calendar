@@ -14,40 +14,23 @@ const CalendarPage = () => {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [isOptionsMenuOpen, setIsOptionsMenuOpen] = useState(false);
   const [calendarEvents, setCalendarEvents] = useState([]);
-  const [year, setYear] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
-  const updateStateIfNoEventsAreFound = (events) => {
+  const handleEventsLoading = (events) => {
     setIsLoading(true);
-    setCalendarEvents(events.map((e) => e.data()));
-    setYear(moment(new Date()).format('YYYY'));
-    setIsLoading(false);
-  };
-
-  const updateStateIfEventsAreFound = (events) => {
-    setIsLoading(true);
-    setYear(moment(events[0].data().date).format('YYYY'));
     setCalendarEvents(events.map((e) => e.data()));
     setIsLoading(false);
   };
 
-  useEffect(
-    () => {
-      const query = FirebaseEventsService.getAllQuery();
-      onSnapshot(query, (querySnap) => {
-        const events = querySnap.docs;
-        const eventsListIsEmpty = events.length == 0;
-        if (eventsListIsEmpty) return updateStateIfNoEventsAreFound(events);
-
-        updateStateIfEventsAreFound(events);
-      });
-    },
-    [
-      // TODO: Check if active day updates after new day starts at 00:00
-      // Reloads component constantly.
-      // calendarEvents
-    ]
-  );
+  useEffect(() => {
+    const query = FirebaseEventsService.getAllQuery();
+    onSnapshot(query, (querySnap) => {
+      const events = querySnap.docs;
+      const eventsListIsEmpty = events.length == 0;
+      if (eventsListIsEmpty) return handleEventsLoading(events);
+      handleEventsLoading(events);
+    });
+  }, []);
 
   const toggleOptionsMenuChild = () => {
     toggleOptionsMenu();
@@ -125,7 +108,7 @@ const CalendarPage = () => {
     return (
       <TopMenu>
         <div className="first-row">
-          <span className="year">{year}</span>
+          <span className="year">{today.format('YYYY')}</span>
           <OptionsButton onClick={toggleOptionsMenu}>Options</OptionsButton>
         </div>
         <div className="second-row">
