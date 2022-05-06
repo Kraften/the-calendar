@@ -60,7 +60,7 @@ OptionsMenu.propTypes = {
 const Container = styled.div`
   z-index: 1;
   position: fixed;
-  top: 0;
+  top: -20px;
   left: 0;
   height: 0%;
   width: 100%;
@@ -71,8 +71,6 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   transition: all 0.6s;
-  background-color: #2d3436;
-
   background: radial-gradient(
     circle at 414% 336%,
     #ffffff,
@@ -88,7 +86,6 @@ const Container = styled.div`
     #080808,
     #000000
   );
-  /* background-image: linear-gradient(315deg, #2d3436 0%, #000000 74%); */
   &.open {
     display: flex;
     flex-direction: column;

@@ -32,9 +32,9 @@ class FirebaseEventsService {
    * Firebase query that fetches all events.
    * @returns Query
    */
-  getAllQuery = () => {
-    const allEventsQuery = query(collection(db, 'events'));
-    return allEventsQuery;
+  getAllQuery = async () => {
+    const querySnapshot = await getDocs(collection(db, 'events'));
+    return querySnapshot;
   };
 
   /**

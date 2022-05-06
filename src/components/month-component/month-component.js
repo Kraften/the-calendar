@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import CalendarDayComponent from '../day-component/day-component';
-import './month-component.css';
+import styled from 'styled-components';
 
 /**
  *
@@ -28,15 +28,26 @@ function Month(props) {
   const monthHasEvents = eventsInMonth.length > 0 ? true : false;
   if (!monthHasEvents) return null;
   return (
-    <div className="flex-column">
+    <MonthContainer className="flex-column">
       <span className="month-name">{props.monthName}</span>
       <CalendarDayComponent
         key={eventsInMonth}
         eventsInMonth={eventsInMonth}
       ></CalendarDayComponent>
-    </div>
+    </MonthContainer>
   );
 }
+
+/*--------------------------------------
+------------Styled Components-----------
+--------------------------------------*/
+const MonthContainer = styled.div`
+  animation: fadeIn 500ms linear forwards;
+  .month-name {
+    font-size: 2rem;
+    padding: 20px 0px;
+  }
+`;
 
 Month.propTypes = {
   monthName: PropTypes.string,

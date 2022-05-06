@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useCallback } from 'react';
 import moment from 'moment';
 import OptionsMenu from '../../components/options-component/options-menu-component';
 import AddEventPanel from '../../components/add-event-panel-component/add-event-panel-component';
@@ -6,30 +6,28 @@ import Month from '../../components/month-component/month-component';
 import styled from 'styled-components';
 import FirebaseEventsService from '../../services/firebase/events.service';
 import './calendar-page.css';
-import { onSnapshot } from 'firebase/firestore';
 import AuthContext from '../../store/auth-context';
+import useBooleanToggle from '../../hooks/useBooleanToggle';
 
 const CalendarPage = () => {
   const authCtx = useContext(AuthContext);
+  const today = moment(new Date());
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [isOptionsMenuOpen, setIsOptionsMenuOpen] = useState(false);
-  const [calendarEvents, setCalendarEvents] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const handleEventsLoading = (events) => {
-    setIsLoading(true);
-    setCalendarEvents(events.map((e) => e.data()));
-    setIsLoading(false);
-  };
+  const [eventsBeforeToday, setEventsBeforeToday] = useState([]);
+  const [eventsTodayOrAfter, setEventsTodayOrAfter] = useState([]);
+  const [isLoading, toggleLoading] = useBooleanToggle(true);
+  const [showHistory, toggleHistory] = useBooleanToggle(false);
 
   useEffect(() => {
-    const query = FirebaseEventsService.getAllQuery();
-    onSnapshot(query, (querySnap) => {
-      const events = querySnap.docs;
-      const eventsListIsEmpty = events.length == 0;
-      if (eventsListIsEmpty) return handleEventsLoading(events);
-      handleEventsLoading(events);
-    });
+    const getAllEvents = async () => {
+      const query = await FirebaseEventsService.getAllQuery();
+      toggleLoading();
+      const events = query.docs;
+      const eventsWithBeforeBoolean = addIsBeforeBooleanToEvent(events);
+      splitOldAndNewEvents(eventsWithBeforeBoolean);
+    };
+    getAllEvents();
   }, []);
 
   const toggleOptionsMenuChild = () => {
@@ -44,6 +42,17 @@ const CalendarPage = () => {
     setIsPanelOpen(!isPanelOpen);
   };
 
+  const addIsBeforeBooleanToEvent = (events) => {
+    const eventsWithBeforeBoolean = events.map((e) => {
+      const newEvent = {
+        ...e.data(),
+        isBeforeToday: !today.isSameOrBefore(e.data().date, 'day')
+      };
+      return newEvent;
+    });
+    return eventsWithBeforeBoolean;
+  };
+
   const nothingToDoElement = (
     <Nothing>
       <span>NOTHING</span>
@@ -51,14 +60,27 @@ const CalendarPage = () => {
     </Nothing>
   );
 
-  const eventsIntoMonthBuckets = () => {
+  const splitOldAndNewEvents = (events) => {
+    const eventsBefore = [];
+    const eventsAfter = [];
+    events.forEach((e) => {
+      if (e.isBeforeToday) {
+        eventsBefore.push(e);
+      } else if (!e.isBeforeToday) {
+        eventsAfter.push(e);
+      }
+    });
+    setEventsBeforeToday(eventsBefore);
+    setEventsTodayOrAfter(eventsAfter);
+  };
+
+  const eventsIntoMonthBuckets = (events) => {
     const monthList = moment.months();
     let eventsByMonth = [];
-    const eventsListIsEmpty = calendarEvents.length == 0;
+    const eventsListIsEmpty = events.length == 0;
     if (eventsListIsEmpty) return nothingToDoElement;
-
     return monthList.map((month) => {
-      calendarEvents.map((event) => {
+      events.map((event) => {
         const monthOfEvent = moment(event.date).format('MMMM');
         if (month === monthOfEvent) eventsByMonth.push(event);
       });
@@ -74,8 +96,14 @@ const CalendarPage = () => {
     if (isLoading) return <h1>Loading</h1>;
     return (
       <StyledCalendar className="App">
+        <ShowHistoryButton onClick={toggleHistory}>
+          {showHistory ? 'Hide history' : 'Show history'}
+        </ShowHistoryButton>
         <div>
-          <ul>{eventsIntoMonthBuckets()}</ul>
+          <ul>
+            {showHistory ? eventsIntoMonthBuckets(eventsBeforeToday) : null}
+            {eventsIntoMonthBuckets(eventsTodayOrAfter)}
+          </ul>
         </div>
       </StyledCalendar>
     );
@@ -104,7 +132,6 @@ const CalendarPage = () => {
   };
 
   const topMenu = () => {
-    const today = moment(new Date());
     return (
       <TopMenu>
         <div className="first-row">
@@ -143,9 +170,12 @@ export default CalendarPage;
 --------------------------------------*/
 const StyledCalendar = styled.div`
   padding: 0 30px;
+  animation: fadeIn 500ms linear forwards;
 `;
 
 const TopMenu = styled.div`
+  animation: fadeIn 500ms linear forwards;
+
   user-select: none;
   display: flex;
   z-index: 2;
@@ -171,7 +201,14 @@ const TopMenu = styled.div`
     font-family: 'montserrat-light';
   }
 `;
-
+const ShowHistoryButton = styled.div`
+  cursor: pointer;
+  margin-top: 10px;
+  background: black;
+  color: lightgoldenrodyellow;
+  padding: 10px;
+  transition: all 2s ease-in-out;
+`;
 const OptionsButton = styled.button`
   all: unset;
   cursor: pointer;
