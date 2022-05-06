@@ -142,8 +142,8 @@ const CalendarPage = () => {
           <span className="day-name bold">Today</span>
           <div>
             <span className="day-name">{today.format('MM')} - </span>
-            <span className="day-name">{today.format('DD')} </span>
-            <span className="day-name">{today.format('dddd')}</span>
+            <span className="day-name bold">{today.format('DD')}</span>
+            <span className="day-name"> - {today.format('dddd')}</span>
           </div>
         </div>
       </TopMenu>

@@ -98,7 +98,7 @@ const AddEventPanel = styled.div`
   height: 60px;
   color: black;
   z-index: -1;
-  background-image: linear-gradient(150deg, #3c3a3a 0%, #000000 74%);
+  background: black;
   transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
 
   @media (max-width: 768px) {
@@ -110,13 +110,6 @@ const AddEventPanel = styled.div`
     margin: 25px;
     width: 50vw;
     height: 56vh;
-    /* width: auto; */
-    /* height: auto; */
-    /* background-color: black; */
-    /* z-index: -1; */
-    /* display: flex; */
-    /* justify-content: center; */
-    /* align-items: center;  */
 
     @media (max-width: 768px) {
       width: 100vw;
