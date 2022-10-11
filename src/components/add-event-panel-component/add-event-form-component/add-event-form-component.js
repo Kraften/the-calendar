@@ -20,9 +20,7 @@ const EventForm = ({ isOpen }) => {
     });
   };
 
-  const handleFormError = (data) => {
-    throw new Error(data);
-  };
+  const handleFormError = (data) => {};
 
   // Settings for registration of the inputs in the form.
   const formOptions = {

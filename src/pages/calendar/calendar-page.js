@@ -21,14 +21,22 @@ const CalendarPage = () => {
   const [showHistory, toggleHistory] = useBooleanToggle(false);
 
   useEffect(() => {
-    const getAllEvents = async () => {
-      const query = await FirebaseEventsService.getAllQuery();
-      toggleLoading();
-      const events = query.docs;
-      const eventsWithBeforeBoolean = addIsBeforeBooleanToEvent(events);
-      splitOldAndNewEvents(eventsWithBeforeBoolean);
+    toggleLoading(false);
+    const unsubscribe = FirebaseEventsService.getAllQuery(
+      (querySnapshot) => {
+        const updatedEventsList = querySnapshot.docs.map((docSnapshot) =>
+          docSnapshot.data()
+        );
+        const eventsWithBeforeBoolean =
+          addIsBeforeBooleanToEvent(updatedEventsList);
+        splitOldAndNewEvents(eventsWithBeforeBoolean);
+      },
+      (error) => setError('events-list-item-get-fail')
+    );
+
+    return () => {
+      unsubscribe();
     };
-    getAllEvents();
   }, []);
 
   const handleOptionsMenuChildToggle = () => {
@@ -46,8 +54,8 @@ const CalendarPage = () => {
   const addIsBeforeBooleanToEvent = (events) => {
     const eventsWithBeforeBoolean = events.map((e) => {
       const newEvent = {
-        ...e.data(),
-        isBeforeToday: !today.isSameOrBefore(e.data().date, 'day')
+        ...e,
+        isBeforeToday: !today.isSameOrBefore(e.date, 'day')
       };
       return newEvent;
     });

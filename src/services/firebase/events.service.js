@@ -5,7 +5,8 @@ import {
   addDoc,
   where,
   deleteDoc,
-  getDocs
+  getDocs,
+  onSnapshot
 } from 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -30,11 +31,12 @@ class FirebaseEventsService {
 
   /**
    * Firebase query that fetches all events.
-   * @returns Query
+   * @returns Unsubscribe
    */
-  getAllQuery = async () => {
-    const querySnapshot = await getDocs(collection(db, 'events'));
-    return querySnapshot;
+  getAllQuery = (snapshot, error) => {
+    const itemsColRef = collection(db, 'events');
+    const itemsQuery = query(itemsColRef);
+    return onSnapshot(itemsQuery, snapshot, error);
   };
 
   /**
