@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useCallback } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import moment from 'moment';
 import OptionsMenu from '../../components/options-component/options-menu-component';
 import AddEventPanel from '../../components/add-event-panel-component/add-event-panel-component';
@@ -74,6 +74,19 @@ const CalendarPage = () => {
     setEventsTodayOrAfter(eventsAfter);
   };
 
+  const eventsIntoYearBuckets = (events) => {
+    if (events) {
+      const yearBucketList = events.reduce((acc, item) => {
+        acc[moment(item.date).format('YYYY')] = [
+          ...(acc[moment(item.date).format('YYYY')] || []),
+          item
+        ];
+        return acc;
+      }, {});
+      return yearBucketList;
+    }
+  };
+
   const eventsIntoMonthBuckets = (events) => {
     const monthList = moment.months();
     let eventsByMonth = [];
@@ -91,19 +104,31 @@ const CalendarPage = () => {
       );
     });
   };
-
+  const listElementsByYear = () => {
+    const eventsInYearBuckets = eventsIntoYearBuckets(eventsTodayOrAfter);
+    const litsElementsByYear = [];
+    for (const [year, eventList] of Object.entries(eventsInYearBuckets)) {
+      litsElementsByYear.push(
+        <li key={year}>
+          <Year>{year}</Year>
+          <ul>
+            {showHistory ? eventsIntoMonthBuckets(eventsBeforeToday) : null}
+            {eventsIntoMonthBuckets(eventList)}
+          </ul>
+        </li>
+      );
+    }
+    return litsElementsByYear;
+  };
   const calendarElement = () => {
     if (isLoading) return <h1>Loading</h1>;
     return (
-      <StyledCalendar className="App">
+      <StyledCalendar>
         <ShowHistoryButton onClick={toggleHistory}>
           {showHistory ? 'Hide history' : 'Show history'}
         </ShowHistoryButton>
         <div>
-          <ul>
-            {showHistory ? eventsIntoMonthBuckets(eventsBeforeToday) : null}
-            {eventsIntoMonthBuckets(eventsTodayOrAfter)}
-          </ul>
+          <ul>{listElementsByYear()}</ul>
         </div>
       </StyledCalendar>
     );
@@ -200,6 +225,11 @@ const TopMenu = styled.div`
     font-size: 1em;
     font-family: 'montserrat-light';
   }
+`;
+
+const Year = styled.h2`
+  font-family: 'Montserrat-semibold';
+  font-size: 4em;
 `;
 const ShowHistoryButton = styled.div`
   cursor: pointer;
