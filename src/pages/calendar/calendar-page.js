@@ -2,12 +2,13 @@ import React, { useEffect, useState, useContext } from 'react';
 import moment from 'moment';
 import OptionsMenu from '../../components/options-component/options-menu-component';
 import AddEventPanel from '../../components/add-event-panel-component/add-event-panel-component';
-import Month from '../../components/month-component/month-component';
+import CalendarMonthComponent from '../../components/month-component/calendar-month-component';
 import styled from 'styled-components';
 import FirebaseEventsService from '../../services/firebase/events.service';
 import './calendar-page.css';
 import AuthContext from '../../store/auth-context';
 import useBooleanToggle from '../../hooks/useBooleanToggle';
+import TopMenuComponent from '../../components/top-menu/top-menu-component.react';
 
 const CalendarPage = () => {
   const authCtx = useContext(AuthContext);
@@ -30,15 +31,15 @@ const CalendarPage = () => {
     getAllEvents();
   }, []);
 
-  const toggleOptionsMenuChild = () => {
-    toggleOptionsMenu();
+  const handleOptionsMenuChildToggle = () => {
+    handleOptionsMenuToggle();
   };
 
-  const toggleOptionsMenu = () => {
+  const handleOptionsMenuToggle = () => {
     setIsOptionsMenuOpen(!isOptionsMenuOpen);
   };
 
-  const toggleAddEventPanel = () => {
+  const handleAddEventPanelToggle = () => {
     setIsPanelOpen(!isPanelOpen);
   };
 
@@ -87,23 +88,6 @@ const CalendarPage = () => {
     }
   };
 
-  const eventsIntoMonthBuckets = (events) => {
-    const monthList = moment.months();
-    let eventsByMonth = [];
-    const eventsListIsEmpty = events.length == 0;
-    if (eventsListIsEmpty) return nothingToDoElement;
-    return monthList.map((month) => {
-      events.map((event) => {
-        const monthOfEvent = moment(event.date).format('MMMM');
-        if (month === monthOfEvent) eventsByMonth.push(event);
-      });
-      return (
-        <li key={month}>
-          <Month monthName={month.toString()} events={eventsByMonth}></Month>
-        </li>
-      );
-    });
-  };
   const listElementsByYear = () => {
     const eventsInYearBuckets = eventsIntoYearBuckets(eventsTodayOrAfter);
     const litsElementsByYear = [];
@@ -120,6 +104,28 @@ const CalendarPage = () => {
     }
     return litsElementsByYear;
   };
+
+  const eventsIntoMonthBuckets = (events) => {
+    const monthList = moment.months();
+    let eventsByMonth = [];
+    const eventsListIsEmpty = events.length == 0;
+    if (eventsListIsEmpty) return nothingToDoElement;
+    return monthList.map((month) => {
+      events.map((event) => {
+        const monthOfEvent = moment(event.date).format('MMMM');
+        if (month === monthOfEvent) eventsByMonth.push(event);
+      });
+      return (
+        <li key={month}>
+          <CalendarMonthComponent
+            monthName={month.toString()}
+            events={eventsByMonth}
+          ></CalendarMonthComponent>
+        </li>
+      );
+    });
+  };
+
   const calendarElement = () => {
     if (isLoading) return <h1>Loading</h1>;
     return (
@@ -140,7 +146,7 @@ const CalendarPage = () => {
       <div className="cover">
         <div
           type="button"
-          onClick={toggleAddEventPanel}
+          onClick={handleAddEventPanelToggle}
           className="add-event-button"
         >
           <span
@@ -156,31 +162,14 @@ const CalendarPage = () => {
     );
   };
 
-  const topMenu = () => {
-    return (
-      <TopMenu>
-        <div className="first-row">
-          <span className="year">{today.format('YYYY')}</span>
-          <OptionsButton onClick={toggleOptionsMenu}>Options</OptionsButton>
-        </div>
-        <div className="second-row">
-          <span className="day-name bold">Today</span>
-          <div>
-            <span className="day-name">{today.format('MM')} - </span>
-            <span className="day-name bold">{today.format('DD')}</span>
-            <span className="day-name"> - {today.format('dddd')}</span>
-          </div>
-        </div>
-      </TopMenu>
-    );
-  };
-
   return (
     <div>
-      {topMenu()}
+      <TopMenuComponent
+        toggleOptionsMenu={handleOptionsMenuToggle}
+      ></TopMenuComponent>
       <OptionsMenu
         isMenuOpen={isOptionsMenuOpen}
-        toggleOptionsMenuChild={toggleOptionsMenuChild}
+        handleOptionsMenuChildToggle={handleOptionsMenuChildToggle}
       />
       {calendarElement()}
       {coverElement()}
@@ -200,7 +189,6 @@ const StyledCalendar = styled.div`
 
 const TopMenu = styled.div`
   animation: fadeIn 500ms linear forwards;
-
   user-select: none;
   display: flex;
   z-index: 2;

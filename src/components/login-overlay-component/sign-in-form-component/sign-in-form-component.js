@@ -7,7 +7,10 @@ import { useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import { handlePromise } from '../../../functions/handle-promis';
 
-const SignInForm = ({ show, toggleOptionsMenuChild }) => {
+const SignInForm = ({
+  show,
+  handleOptionsMenuChildToggle: handleOptionsMenuChildToggle
+}) => {
   const authCtx = useContext(AuthContext);
   // Destructuring of features from useForm package.
   const {
@@ -40,14 +43,13 @@ const SignInForm = ({ show, toggleOptionsMenuChild }) => {
       // Login success
       const user = userCredentials.user;
       authCtx.login(user.accessToken);
-      const isMenuOpenLocal = show;
       reset(); // Reset the form.'
       // This closes the Options menu after successful login.
-      toggleOptionsMenuChild();
+      handleOptionsMenuChildToggle();
     }
   };
 
-  const onSubmitClick = () => {
+  const handleSubmitClick = () => {
     const enteredEmail = getValues('email');
     const enteredPassword = getValues('password');
     signIn(enteredEmail, enteredPassword);
@@ -60,7 +62,7 @@ const SignInForm = ({ show, toggleOptionsMenuChild }) => {
   {
     if (!show) return null;
     return (
-      <StyledForm onSubmit={handleSubmit(onSubmitClick, handleFormError)}>
+      <StyledForm onSubmit={handleSubmit(handleSubmitClick, handleFormError)}>
         <input
           placeholder="EMAIL"
           name="email"
@@ -82,7 +84,7 @@ const SignInForm = ({ show, toggleOptionsMenuChild }) => {
 SignInForm.propTypes = {
   show: PropTypes.bool,
   closeMenuAfterLogin: PropTypes.func,
-  toggleOptionsMenuChild: PropTypes.func
+  handleOptionsMenuChildToggle: PropTypes.func
 };
 
 export default SignInForm;

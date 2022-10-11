@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import AuthContext from '../../store/auth-context';
 import SignInForm from '../login-overlay-component/sign-in-form-component/sign-in-form-component';
 
-const OptionsMenu = ({ isMenuOpen, toggleOptionsMenuChild }) => {
+const OptionsMenu = ({ isMenuOpen, handleOptionsMenuChildToggle }) => {
   const authCtx = useContext(AuthContext);
   const [showLoginForm, setShowLoginForm] = useState(false);
 
@@ -16,29 +16,29 @@ const OptionsMenu = ({ isMenuOpen, toggleOptionsMenuChild }) => {
   }, [isMenuOpen]);
 
   const MenuItems = () => {
-    const onAboutClick = () => {
+    const handleAboutClick = () => {
       console.log('Abooouut');
     };
-    const onLogoutClick = () => {
+    const handleLogoutClick = () => {
       authCtx.logout();
     };
-    const onClickLoginMenuOpen = () => {
+    const handleClickLoginMenuOpen = () => {
       setShowLoginForm(!showLoginForm);
     };
     return (
       <Menu>
         {!authCtx.isLoggedIn ? (
           <div>
-            <MenuItem onClick={onClickLoginMenuOpen}>Login</MenuItem>
+            <MenuItem onClick={handleClickLoginMenuOpen}>Login</MenuItem>
             <SignInForm
               show={showLoginForm}
-              toggleOptionsMenuChild={toggleOptionsMenuChild}
+              handleOptionsMenuChildToggle={handleOptionsMenuChildToggle}
             ></SignInForm>
           </div>
         ) : (
-          <MenuItem onClick={onLogoutClick}>Logout</MenuItem>
+          <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
         )}
-        <MenuItem onClick={onAboutClick}>About</MenuItem>
+        <MenuItem onClick={handleAboutClick}>About</MenuItem>
       </Menu>
     );
   };
@@ -51,7 +51,7 @@ export default OptionsMenu;
 
 OptionsMenu.propTypes = {
   isMenuOpen: PropTypes.bool,
-  toggleOptionsMenuChild: PropTypes.func
+  handleOptionsMenuChildToggle: PropTypes.func
 };
 
 /*--------------------------------------

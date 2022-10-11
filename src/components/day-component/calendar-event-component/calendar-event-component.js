@@ -7,9 +7,9 @@ import AuthContext from '../../../store/auth-context';
 
 // Destructed prop { event } is an object containing information that this component renders.
 const CalendarEventComponent = ({ event, eventIsToday }) => {
-  const dateTime = moment(event.date);
+  const eventDateTime = moment(event.date);
   const authCtx = useContext(AuthContext);
-  const listItemClick = (id) => {
+  const handleEventDelete = (id) => {
     FirebaseEventsService.deleteEventById(id);
   };
 
@@ -27,14 +27,14 @@ const CalendarEventComponent = ({ event, eventIsToday }) => {
       <div className="title-and-x-row">
         <span className="event-name">{event.title}</span>
         {authCtx.isLoggedIn ? (
-          <span className="x" onClick={() => listItemClick(event.id)}>
+          <span className="x" onClick={() => handleEventDelete(event.id)}>
             X
           </span>
         ) : (
           ''
         )}
       </div>
-      <span className="event-time">{dateTime.format('HH:mm')}</span>
+      <span className="event-time">{eventDateTime.format('HH:mm')}</span>
 
       <span>{event.comment}</span>
     </StyledEvent>
