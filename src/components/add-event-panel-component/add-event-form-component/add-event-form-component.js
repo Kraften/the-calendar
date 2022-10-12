@@ -94,9 +94,9 @@ const AddEventPanel = styled.div`
   margin: 25px;
   width: 60px;
   height: 60px;
-  color: black;
+  color: var(--calendar-black);
   z-index: -1;
-  background: black;
+  background: var(--calendar-black);
   transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
 
   @media (max-width: 768px) {

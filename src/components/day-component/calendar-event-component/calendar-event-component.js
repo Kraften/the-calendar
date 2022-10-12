@@ -48,7 +48,7 @@ const CalendarEventComponent = ({ event, eventIsToday }) => {
 const StyledEvent = styled.li`
   padding-left: 20px;
   margin: 7px;
-  border-left: 11px solid black;
+  border-left: 11px solid var(--calendar-black);
   font-family: 'montserrat-medium';
   transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
 

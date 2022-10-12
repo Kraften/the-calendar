@@ -17,16 +17,17 @@ const CalendarPage = () => {
   const [isOptionsMenuOpen, setIsOptionsMenuOpen] = useState(false);
   const [eventsBeforeToday, setEventsBeforeToday] = useState([]);
   const [eventsTodayOrAfter, setEventsTodayOrAfter] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [showHistory, toggleHistory] = useBooleanToggle(false);
 
   useEffect(() => {
     const unsubscribe = FirebaseEventsService.getAllQuery(
       (querySnapshot) => {
-        const updatedEventsList = querySnapshot.docs.map((docSnapshot) => {
+        const eventsList = querySnapshot.docs.map((docSnapshot) => {
           return docSnapshot.data();
         });
-
-        const b = addIsBeforeBooleanToEvent(updatedEventsList);
+        setIsLoading(false);
+        const b = addIsBeforeBooleanToEvent(eventsList);
         splitOldAndNewEvents(b);
       },
       (error) => setError('events-list-item-get-fail')
@@ -62,13 +63,10 @@ const CalendarPage = () => {
     }
   };
 
-  const nothingToDoElement = (
-    <Nothing>
-      <span>NOTHING</span>
-      <span> TO DO </span>
-    </Nothing>
-  );
-
+  /**
+   * Split elements by before today, today and beyond.
+   * @param {*} events
+   */
   const splitOldAndNewEvents = (events) => {
     const eventsBefore = [];
     const eventsAfter = [];
@@ -102,7 +100,7 @@ const CalendarPage = () => {
     for (const [year, eventList] of Object.entries(eventsInYearBuckets)) {
       litsElementsByYear.push(
         <li key={year}>
-          <Year>{year}</Year>
+          {today.format('YYYY') !== year ? <Year>{year}</Year> : null}
           <ul>
             {showHistory ? eventsIntoMonthBuckets(eventsBeforeToday) : null}
             {eventsIntoMonthBuckets(eventList)}
@@ -135,6 +133,7 @@ const CalendarPage = () => {
   };
 
   const calendarElement = () => {
+    if (isLoading) return <h1>Loading</h1>;
     return (
       <StyledCalendar>
         <ShowHistoryButton onClick={toggleHistory}>
@@ -169,6 +168,13 @@ const CalendarPage = () => {
     );
   };
 
+  const nothingToDoElement = (
+    <Nothing>
+      <span>NOTHING</span>
+      <span> TO DO </span>
+    </Nothing>
+  );
+
   return (
     <div>
       <TopMenuComponent
@@ -193,20 +199,21 @@ const StyledCalendar = styled.div`
   padding: 0 30px;
   animation: fadeIn 500ms linear forwards;
 `;
-
-const Year = styled.h2`
+const Year = styled.div`
   font-family: 'Montserrat-semibold';
   font-size: 4em;
+  background-color: var(--calendar-black);
+  color: white;
+  padding-left: 10px;
 `;
 const ShowHistoryButton = styled.div`
   cursor: pointer;
   margin-top: 10px;
-  background: black;
+  background: var(--calendar-black);
   color: lightgoldenrodyellow;
   padding: 10px;
   transition: all 2s ease-in-out;
 `;
-
 const Nothing = styled.div`
   user-select: none;
   font-size: calc(1rem + 16vw);
