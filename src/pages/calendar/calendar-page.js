@@ -17,19 +17,17 @@ const CalendarPage = () => {
   const [isOptionsMenuOpen, setIsOptionsMenuOpen] = useState(false);
   const [eventsBeforeToday, setEventsBeforeToday] = useState([]);
   const [eventsTodayOrAfter, setEventsTodayOrAfter] = useState([]);
-  const [isLoading, toggleLoading] = useBooleanToggle(true);
   const [showHistory, toggleHistory] = useBooleanToggle(false);
 
   useEffect(() => {
-    toggleLoading(false);
     const unsubscribe = FirebaseEventsService.getAllQuery(
       (querySnapshot) => {
-        const updatedEventsList = querySnapshot.docs.map((docSnapshot) =>
-          docSnapshot.data()
-        );
-        const eventsWithBeforeBoolean =
-          addIsBeforeBooleanToEvent(updatedEventsList);
-        splitOldAndNewEvents(eventsWithBeforeBoolean);
+        const updatedEventsList = querySnapshot.docs.map((docSnapshot) => {
+          return docSnapshot.data();
+        });
+
+        const b = addIsBeforeBooleanToEvent(updatedEventsList);
+        splitOldAndNewEvents(b);
       },
       (error) => setError('events-list-item-get-fail')
     );
@@ -52,14 +50,16 @@ const CalendarPage = () => {
   };
 
   const addIsBeforeBooleanToEvent = (events) => {
-    const eventsWithBeforeBoolean = events.map((e) => {
-      const newEvent = {
-        ...e,
-        isBeforeToday: !today.isSameOrBefore(e.date, 'day')
-      };
-      return newEvent;
-    });
-    return eventsWithBeforeBoolean;
+    if (events) {
+      const eventsWithBeforeBoolean = events.map((e) => {
+        const newEvent = {
+          ...e,
+          isBeforeToday: !today.isSameOrBefore(e.date, 'day')
+        };
+        return newEvent;
+      });
+      return eventsWithBeforeBoolean;
+    }
   };
 
   const nothingToDoElement = (
@@ -135,7 +135,6 @@ const CalendarPage = () => {
   };
 
   const calendarElement = () => {
-    if (isLoading) return <h1>Loading</h1>;
     return (
       <StyledCalendar>
         <ShowHistoryButton onClick={toggleHistory}>
@@ -195,34 +194,6 @@ const StyledCalendar = styled.div`
   animation: fadeIn 500ms linear forwards;
 `;
 
-const TopMenu = styled.div`
-  animation: fadeIn 500ms linear forwards;
-  user-select: none;
-  display: flex;
-  z-index: 2;
-  flex-direction: column;
-  position: sticky;
-  background: white;
-  padding: 16px 20px;
-  top: 0px;
-  border-bottom: 1px solid whitesmoke;
-
-  .first-row {
-    display: flex;
-    justify-content: space-between;
-
-    .year {
-      font-family: 'Montserrat-semibold';
-      font-size: 4em;
-    }
-  }
-
-  .second-row {
-    font-size: 1em;
-    font-family: 'montserrat-light';
-  }
-`;
-
 const Year = styled.h2`
   font-family: 'Montserrat-semibold';
   font-size: 4em;
@@ -235,13 +206,7 @@ const ShowHistoryButton = styled.div`
   padding: 10px;
   transition: all 2s ease-in-out;
 `;
-const OptionsButton = styled.button`
-  all: unset;
-  cursor: pointer;
-  z-index: 2;
-  font-size: 2em;
-  font-weight: bold;
-`;
+
 const Nothing = styled.div`
   user-select: none;
   font-size: calc(1rem + 16vw);

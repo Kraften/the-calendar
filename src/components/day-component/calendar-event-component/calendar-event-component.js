@@ -9,6 +9,7 @@ import AuthContext from '../../../store/auth-context';
 const CalendarEventComponent = ({ event, eventIsToday }) => {
   const eventDateTime = moment(event.date);
   const authCtx = useContext(AuthContext);
+
   const handleEventDelete = (id) => {
     FirebaseEventsService.deleteEventById(id);
   };
