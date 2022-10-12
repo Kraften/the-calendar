@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useContext } from 'react';
-import moment from 'moment';
-import OptionsMenu from '../../components/options-component/options-menu-component';
-import AddEventPanel from '../../components/add-event-panel-component/add-event-panel-component';
-import CalendarMonthComponent from '../../components/month-component/calendar-month-component';
 import styled from 'styled-components';
+
+import moment from 'moment';
 import FirebaseEventsService from '../../services/firebase/events.service';
-import './calendar-page.css';
+import OptionsMenu from '../../components/options-menu-component';
+import AddEventPanel from '../../components/calendar-add-event-panel-component';
+import CalendarMonthComponent from '../../components/calendar-month-component';
+import TopMenuComponent from '../../components/top-menu-component.react';
 import AuthContext from '../../store/auth-context';
 import useBooleanToggle from '../../hooks/useBooleanToggle';
-import TopMenuComponent from '../../components/top-menu/top-menu-component.react';
 
 const CalendarPage = () => {
   const authCtx = useContext(AuthContext);
@@ -150,11 +150,7 @@ const CalendarPage = () => {
     if (!authCtx.isLoggedIn) return null;
     return (
       <div className="cover">
-        <div
-          type="button"
-          onClick={handleAddEventPanelToggle}
-          className="add-event-button"
-        >
+        <AddEventButton type="button" onClick={handleAddEventPanelToggle}>
           <span
             className={`add-event-button-text  ${
               isPanelOpen ? 'clicked add-event-button-text' : ''
@@ -162,7 +158,7 @@ const CalendarPage = () => {
           >
             +
           </span>
-        </div>
+        </AddEventButton>
         <AddEventPanel isOpen={isPanelOpen}></AddEventPanel>
       </div>
     );
@@ -205,6 +201,36 @@ const Year = styled.div`
   background-color: var(--calendar-black);
   color: white;
   padding-left: 10px;
+`;
+
+const AddEventButton = styled.div`
+  all: unset;
+  background-color: #000;
+  color: white;
+  cursor: pointer;
+  width: 60px;
+  height: 60px;
+  margin: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 4rem;
+  font-family: 'montserrat-semibold';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transition: all 0.3s ease-in-out;
+  .add-event-button-text.clicked {
+    transform: rotate(45deg);
+  }
+  .add-event-button:hover {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.07),
+      0 4px 8px rgba(0, 0, 0, 0.07), 0 8px 16px rgba(0, 0, 0, 0.07),
+      0 16px 32px rgba(0, 0, 0, 0.07), 0 32px 64px rgba(0, 0, 0, 0.07);
+  }
+  .add-event-button-text {
+    transition: all 0.3s ease-in-out;
+  }
 `;
 const ShowHistoryButton = styled.div`
   cursor: pointer;

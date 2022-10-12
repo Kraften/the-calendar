@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import moment from 'moment';
 import PropTypes from 'prop-types';
+
+import moment from 'moment';
 
 const TopMenuComponent = ({ toggleOptionsMenu }) => {
   const today = moment(new Date());

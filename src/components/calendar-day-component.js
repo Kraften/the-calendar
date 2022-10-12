@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import styled from 'styled-components';
-import CalendarEventComponent from './calendar-event-component/calendar-event-component';
+
+import moment from 'moment';
+import CalendarEventComponent from './calendar-event-component';
 
 /**
  * @param eventList list of events.

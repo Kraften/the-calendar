@@ -1,11 +1,12 @@
 import React, { useContext } from 'react';
-import styled from 'styled-components';
-import { auth } from '../../../services/firebase/firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import AuthContext from '../../../store/auth-context';
-import { useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
-import { handlePromise } from '../../../functions/handle-promis';
+import styled from 'styled-components';
+
+import AuthContext from '../store/auth-context';
+import { auth } from '../services/firebase/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useForm } from 'react-hook-form';
+import { handlePromise } from '../functions/handle-promise';
 
 const SignInForm = ({
   show,

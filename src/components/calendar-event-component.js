@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import styled from 'styled-components';
-import FirebaseEventsService from '../../../services/firebase/events.service';
-import AuthContext from '../../../store/auth-context';
+
+import moment from 'moment';
+import AuthContext from '../store/auth-context';
+import FirebaseEventsService from '../services/firebase/events.service';
 
 // Destructed prop { event } is an object containing information that this component renders.
 const CalendarEventComponent = ({ event, eventIsToday }) => {

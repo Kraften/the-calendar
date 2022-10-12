@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
-import CalendarDayComponent from '../day-component/calendar-day-component';
 import styled from 'styled-components';
 
+import moment from 'moment';
+import CalendarDayComponent from './calendar-day-component';
+
 /**
- *
  * @param {*} props { events: [], monthName: string }
  * @returns
  */

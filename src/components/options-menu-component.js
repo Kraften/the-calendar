@@ -1,8 +1,9 @@
 import React, { useContext, useState, useEffect } from 'react';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import AuthContext from '../../store/auth-context';
-import SignInForm from '../login-overlay-component/sign-in-form-component/sign-in-form-component';
+import styled from 'styled-components';
+
+import AuthContext from '../store/auth-context';
+import SignInForm from './options-menu-sign-in-form-component';
 
 const OptionsMenu = ({ isMenuOpen, handleOptionsMenuChildToggle }) => {
   const authCtx = useContext(AuthContext);
