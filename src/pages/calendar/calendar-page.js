@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useCallback } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import moment from 'moment';
 import OptionsMenu from '../../components/options-component/options-menu-component';
 import AddEventPanel from '../../components/add-event-panel-component/add-event-panel-component';
@@ -8,6 +8,7 @@ import FirebaseEventsService from '../../services/firebase/events.service';
 import './calendar-page.css';
 import AuthContext from '../../store/auth-context';
 import useBooleanToggle from '../../hooks/useBooleanToggle';
+import TopMenuComponent from '../../components/top-menu-component/top-menu-component';
 
 const CalendarPage = () => {
   const authCtx = useContext(AuthContext);
@@ -31,10 +32,6 @@ const CalendarPage = () => {
   }, []);
 
   const toggleOptionsMenuChild = () => {
-    toggleOptionsMenu();
-  };
-
-  const toggleOptionsMenu = () => {
     setIsOptionsMenuOpen(!isOptionsMenuOpen);
   };
 
@@ -131,28 +128,14 @@ const CalendarPage = () => {
     );
   };
 
-  const topMenu = () => {
-    return (
-      <TopMenu>
-        <div className="first-row">
-          <span className="year">{today.format('YYYY')}</span>
-          <OptionsButton onClick={toggleOptionsMenu}>Options</OptionsButton>
-        </div>
-        <div className="second-row">
-          <span className="day-name bold">Today</span>
-          <div>
-            <span className="day-name">{today.format('MM')} - </span>
-            <span className="day-name bold">{today.format('DD')}</span>
-            <span className="day-name"> - {today.format('dddd')}</span>
-          </div>
-        </div>
-      </TopMenu>
-    );
-  };
-
   return (
     <div>
-      {topMenu()}
+      <TopMenuComponent
+        firstRowHeaderText={today.format('YYYY')}
+        hasTwoRows={true}
+        click={toggleOptionsMenuChild}
+        today={today}
+      ></TopMenuComponent>
       <OptionsMenu
         isMenuOpen={isOptionsMenuOpen}
         toggleOptionsMenuChild={toggleOptionsMenuChild}
@@ -173,34 +156,6 @@ const StyledCalendar = styled.div`
   animation: fadeIn 500ms linear forwards;
 `;
 
-const TopMenu = styled.div`
-  animation: fadeIn 500ms linear forwards;
-
-  user-select: none;
-  display: flex;
-  z-index: 2;
-  flex-direction: column;
-  position: sticky;
-  background: white;
-  padding: 16px 20px;
-  top: 0px;
-  border-bottom: 1px solid whitesmoke;
-
-  .first-row {
-    display: flex;
-    justify-content: space-between;
-
-    .year {
-      font-family: 'Montserrat-semibold';
-      font-size: 4em;
-    }
-  }
-
-  .second-row {
-    font-size: 1em;
-    font-family: 'montserrat-light';
-  }
-`;
 const ShowHistoryButton = styled.div`
   cursor: pointer;
   margin-top: 10px;
@@ -209,13 +164,7 @@ const ShowHistoryButton = styled.div`
   padding: 10px;
   transition: all 2s ease-in-out;
 `;
-const OptionsButton = styled.button`
-  all: unset;
-  cursor: pointer;
-  z-index: 2;
-  font-size: 2em;
-  font-weight: bold;
-`;
+
 const Nothing = styled.div`
   user-select: none;
   font-size: calc(1rem + 16vw);

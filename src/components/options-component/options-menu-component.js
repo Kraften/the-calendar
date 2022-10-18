@@ -3,10 +3,12 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import AuthContext from '../../store/auth-context';
 import SignInForm from '../login-overlay-component/sign-in-form-component/sign-in-form-component';
+import { useNavigate } from 'react-router-dom';
 
 const OptionsMenu = ({ isMenuOpen, toggleOptionsMenuChild }) => {
   const authCtx = useContext(AuthContext);
   const [showLoginForm, setShowLoginForm] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Make sure login form closes when options menu closes.
@@ -17,7 +19,10 @@ const OptionsMenu = ({ isMenuOpen, toggleOptionsMenuChild }) => {
 
   const MenuItems = () => {
     const onAboutClick = () => {
-      console.log('Abooouut');
+      navigate('/art')
+    };
+    const onCalendarClick = () => {
+      navigate('/')
     };
     const onLogoutClick = () => {
       authCtx.logout();
@@ -39,6 +44,7 @@ const OptionsMenu = ({ isMenuOpen, toggleOptionsMenuChild }) => {
           <MenuItem onClick={onLogoutClick}>Logout</MenuItem>
         )}
         <MenuItem onClick={onAboutClick}>About</MenuItem>
+        <MenuItem onClick={onCalendarClick}>Calendar</MenuItem>
       </Menu>
     );
   };

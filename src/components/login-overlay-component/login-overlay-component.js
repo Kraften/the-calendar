@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import SignInForm from './sign-in-form-component/sign-in-form-component.js';
 import './login-overlay-component.css';
 
-const LoginOverlay = (props) => {
-  const close = () => {
-    const showLoginPanel = props.showLoginPanel;
-    props.handleClose(!showLoginPanel);
-  };
+const LoginOverlay = () => {
+  // const close = () => {
+  //   const showLoginPanel = props.showLoginPanel;
+  //   props.handleClose(!showLoginPanel);
+  // };
   return (
     <SignInForm></SignInForm>
 

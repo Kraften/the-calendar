@@ -15,7 +15,6 @@ const SignInForm = ({ show, toggleOptionsMenuChild }) => {
     handleSubmit,
     reset,
     getValues,
-    formState: { errors }
   } = useForm();
 
   // Settings for registration of the inputs in the form.
@@ -40,7 +39,7 @@ const SignInForm = ({ show, toggleOptionsMenuChild }) => {
       // Login success
       const user = userCredentials.user;
       authCtx.login(user.accessToken);
-      const isMenuOpenLocal = show;
+      // const isMenuOpenLocal = show;
       reset(); // Reset the form.'
       // This closes the Options menu after successful login.
       toggleOptionsMenuChild();

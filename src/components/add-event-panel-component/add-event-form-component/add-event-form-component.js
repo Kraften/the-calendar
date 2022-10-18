@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import FirebaseEventsService from '../../../services/firebase/events.service';
 import styled from 'styled-components';
