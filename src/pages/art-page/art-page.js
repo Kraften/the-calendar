@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import OptionsMenu from '../../components/options-component/options-menu-component';
+import OptionsMenuComponent from '../../components/options-menu-component';
 import TopMenuComponent from '../../components/top-menu-component/top-menu-component';
-// import OptionsMenu from '../../components/options-component/options-menu-component';
 import Could from '../../resources/img/cloud.png';
 
 const ArtPage = () => {
@@ -20,7 +19,7 @@ const ArtPage = () => {
           hasTwoRows={false}
           click={toggleOptionsMenuChild}
         ></TopMenuComponent>
-        <OptionsMenu
+        <OptionsMenuComponent
           isMenuOpen={isOptionsMenuOpen}
           toggleOptionsMenuChild={toggleOptionsMenuChild}
         />

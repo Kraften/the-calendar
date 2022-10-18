@@ -1,19 +1,14 @@
 import React, { useEffect, useState, useContext } from 'react';
 import moment from 'moment';
-import OptionsMenu from '../../components/options-component/options-menu-component';
-import AddEventPanel from '../../components/add-event-panel-component/add-event-panel-component';
-import Month from '../../components/month-component/month-component';
+import OptionsMenuComponent from '../../components/options-menu-component';
+import AddEventPanel from '../../components/calendar-add-event-panel-component';
 import styled from 'styled-components';
 
-import moment from 'moment';
 import FirebaseEventsService from '../../services/firebase/events.service';
-import OptionsMenu from '../../components/options-menu-component';
-import AddEventPanel from '../../components/calendar-add-event-panel-component';
 import CalendarMonthComponent from '../../components/calendar-month-component';
 import TopMenuComponent from '../../components/top-menu-component.react';
 import AuthContext from '../../store/auth-context';
 import useBooleanToggle from '../../hooks/useBooleanToggle';
-import TopMenuComponent from '../../components/top-menu-component/top-menu-component';
 
 const CalendarPage = () => {
   const authCtx = useContext(AuthContext);
@@ -35,7 +30,6 @@ const CalendarPage = () => {
         const b = addIsBeforeBooleanToEvent(eventsList);
         splitOldAndNewEvents(b);
       },
-      (error) => setError('events-list-item-get-fail')
     );
 
     return () => {
@@ -181,7 +175,7 @@ const CalendarPage = () => {
       <TopMenuComponent
         toggleOptionsMenu={handleOptionsMenuToggle}
       ></TopMenuComponent>
-      <OptionsMenu
+      <OptionsMenuComponent
         isMenuOpen={isOptionsMenuOpen}
         handleOptionsMenuChildToggle={handleOptionsMenuChildToggle}
       />

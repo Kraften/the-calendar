@@ -1,14 +1,14 @@
 import React, { useContext, useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import AuthContext from '../../store/auth-context';
-import SignInForm from '../login-overlay-component/sign-in-form-component/sign-in-form-component';
 import { useNavigate } from 'react-router-dom';
+
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import AuthContext from '../store/auth-context';
 import SignInForm from './options-menu-sign-in-form-component';
 
-const OptionsMenu = ({ isMenuOpen, handleOptionsMenuChildToggle }) => {
+
+const OptionsMenuComponent = ({ isMenuOpen, handleOptionsMenuChildToggle }) => {
   const authCtx = useContext(AuthContext);
   const [showLoginForm, setShowLoginForm] = useState(false);
   const navigate = useNavigate();
@@ -21,11 +21,8 @@ const OptionsMenu = ({ isMenuOpen, handleOptionsMenuChildToggle }) => {
   }, [isMenuOpen]);
 
   const MenuItems = () => {
-    const onAboutClick = () => {
+    const handleAboutClick = () => {
       navigate('/art')
-    };
-    const onCalendarClick = () => {
-      navigate('/')
     };
     const handleLogoutClick = () => {
       authCtx.logout();
@@ -46,7 +43,7 @@ const OptionsMenu = ({ isMenuOpen, handleOptionsMenuChildToggle }) => {
         ) : (
           <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
         )}
-        <MenuItem onClick={handleAboutClick}>About</MenuItem>
+        <MenuItem onClick={handleAboutClick}>Art</MenuItem>
       </Menu>
     );
   };
@@ -55,9 +52,9 @@ const OptionsMenu = ({ isMenuOpen, handleOptionsMenuChildToggle }) => {
   );
 };
 
-export default OptionsMenu;
+export default OptionsMenuComponent;
 
-OptionsMenu.propTypes = {
+OptionsMenuComponent.propTypes = {
   isMenuOpen: PropTypes.bool,
   handleOptionsMenuChildToggle: PropTypes.func
 };
