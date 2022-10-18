@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FirebaseEventsService from '../../../services/firebase/events.service';
 import styled from 'styled-components';
+
 import { useForm } from 'react-hook-form';
+import FirebaseEventsService from '../services/firebase/events.service';
 
 // isOpen comes from parent and controls the Open/close of the AddEventPanel.
 const EventForm = ({ isOpen }) => {
@@ -20,9 +21,7 @@ const EventForm = ({ isOpen }) => {
     });
   };
 
-  const handleFormError = (data) => {
-    throw new Error(data);
-  };
+  const handleFormError = (data) => {};
 
   // Settings for registration of the inputs in the form.
   const formOptions = {
@@ -96,14 +95,10 @@ const AddEventPanel = styled.div`
   margin: 25px;
   width: 60px;
   height: 60px;
-  color: black;
+  color: var(--calendar-black);
   z-index: -1;
   background: black;
   transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
-
-  @media (max-width: 768px) {
-    margin: 0;
-  }
 
   &.open {
     color: white;

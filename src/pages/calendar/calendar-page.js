@@ -4,8 +4,13 @@ import OptionsMenu from '../../components/options-component/options-menu-compone
 import AddEventPanel from '../../components/add-event-panel-component/add-event-panel-component';
 import Month from '../../components/month-component/month-component';
 import styled from 'styled-components';
+
+import moment from 'moment';
 import FirebaseEventsService from '../../services/firebase/events.service';
-import './calendar-page.css';
+import OptionsMenu from '../../components/options-menu-component';
+import AddEventPanel from '../../components/calendar-add-event-panel-component';
+import CalendarMonthComponent from '../../components/calendar-month-component';
+import TopMenuComponent from '../../components/top-menu-component.react';
 import AuthContext from '../../store/auth-context';
 import useBooleanToggle from '../../hooks/useBooleanToggle';
 import TopMenuComponent from '../../components/top-menu-component/top-menu-component';
@@ -17,46 +22,56 @@ const CalendarPage = () => {
   const [isOptionsMenuOpen, setIsOptionsMenuOpen] = useState(false);
   const [eventsBeforeToday, setEventsBeforeToday] = useState([]);
   const [eventsTodayOrAfter, setEventsTodayOrAfter] = useState([]);
-  const [isLoading, toggleLoading] = useBooleanToggle(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [showHistory, toggleHistory] = useBooleanToggle(false);
 
   useEffect(() => {
-    const getAllEvents = async () => {
-      const query = await FirebaseEventsService.getAllQuery();
-      toggleLoading();
-      const events = query.docs;
-      const eventsWithBeforeBoolean = addIsBeforeBooleanToEvent(events);
-      splitOldAndNewEvents(eventsWithBeforeBoolean);
+    const unsubscribe = FirebaseEventsService.getAllQuery(
+      (querySnapshot) => {
+        const eventsList = querySnapshot.docs.map((docSnapshot) => {
+          return docSnapshot.data();
+        });
+        setIsLoading(false);
+        const b = addIsBeforeBooleanToEvent(eventsList);
+        splitOldAndNewEvents(b);
+      },
+      (error) => setError('events-list-item-get-fail')
+    );
+
+    return () => {
+      unsubscribe();
     };
-    getAllEvents();
   }, []);
 
-  const toggleOptionsMenuChild = () => {
+  const handleOptionsMenuChildToggle = () => {
+    handleOptionsMenuToggle();
+  };
+
+  const handleOptionsMenuToggle = () => {
     setIsOptionsMenuOpen(!isOptionsMenuOpen);
   };
 
-  const toggleAddEventPanel = () => {
+  const handleAddEventPanelToggle = () => {
     setIsPanelOpen(!isPanelOpen);
   };
 
   const addIsBeforeBooleanToEvent = (events) => {
-    const eventsWithBeforeBoolean = events.map((e) => {
-      const newEvent = {
-        ...e.data(),
-        isBeforeToday: !today.isSameOrBefore(e.data().date, 'day')
-      };
-      return newEvent;
-    });
-    return eventsWithBeforeBoolean;
+    if (events) {
+      const eventsWithBeforeBoolean = events.map((e) => {
+        const newEvent = {
+          ...e,
+          isBeforeToday: !today.isSameOrBefore(e.date, 'day')
+        };
+        return newEvent;
+      });
+      return eventsWithBeforeBoolean;
+    }
   };
 
-  const nothingToDoElement = (
-    <Nothing>
-      <span>NOTHING</span>
-      <span> TO DO </span>
-    </Nothing>
-  );
-
+  /**
+   * Split elements by before today, today and beyond.
+   * @param {*} events
+   */
   const splitOldAndNewEvents = (events) => {
     const eventsBefore = [];
     const eventsAfter = [];
@@ -71,6 +86,36 @@ const CalendarPage = () => {
     setEventsTodayOrAfter(eventsAfter);
   };
 
+  const eventsIntoYearBuckets = (events) => {
+    if (events) {
+      const yearBucketList = events.reduce((acc, item) => {
+        acc[moment(item.date).format('YYYY')] = [
+          ...(acc[moment(item.date).format('YYYY')] || []),
+          item
+        ];
+        return acc;
+      }, {});
+      return yearBucketList;
+    }
+  };
+
+  const listElementsByYear = () => {
+    const eventsInYearBuckets = eventsIntoYearBuckets(eventsTodayOrAfter);
+    const litsElementsByYear = [];
+    for (const [year, eventList] of Object.entries(eventsInYearBuckets)) {
+      litsElementsByYear.push(
+        <li key={year}>
+          {today.format('YYYY') !== year ? <Year>{year}</Year> : null}
+          <ul>
+            {showHistory ? eventsIntoMonthBuckets(eventsBeforeToday) : null}
+            {eventsIntoMonthBuckets(eventList)}
+          </ul>
+        </li>
+      );
+    }
+    return litsElementsByYear;
+  };
+
   const eventsIntoMonthBuckets = (events) => {
     const monthList = moment.months();
     let eventsByMonth = [];
@@ -83,7 +128,10 @@ const CalendarPage = () => {
       });
       return (
         <li key={month}>
-          <Month monthName={month.toString()} events={eventsByMonth}></Month>
+          <CalendarMonthComponent
+            monthName={month.toString()}
+            events={eventsByMonth}
+          ></CalendarMonthComponent>
         </li>
       );
     });
@@ -92,15 +140,12 @@ const CalendarPage = () => {
   const calendarElement = () => {
     if (isLoading) return <h1>Loading</h1>;
     return (
-      <StyledCalendar className="App">
+      <StyledCalendar>
         <ShowHistoryButton onClick={toggleHistory}>
           {showHistory ? 'Hide history' : 'Show history'}
         </ShowHistoryButton>
         <div>
-          <ul>
-            {showHistory ? eventsIntoMonthBuckets(eventsBeforeToday) : null}
-            {eventsIntoMonthBuckets(eventsTodayOrAfter)}
-          </ul>
+          <ul>{listElementsByYear()}</ul>
         </div>
       </StyledCalendar>
     );
@@ -110,11 +155,7 @@ const CalendarPage = () => {
     if (!authCtx.isLoggedIn) return null;
     return (
       <div className="cover">
-        <div
-          type="button"
-          onClick={toggleAddEventPanel}
-          className="add-event-button"
-        >
+        <AddEventButton type="button" onClick={handleAddEventPanelToggle}>
           <span
             className={`add-event-button-text  ${
               isPanelOpen ? 'clicked add-event-button-text' : ''
@@ -122,23 +163,27 @@ const CalendarPage = () => {
           >
             +
           </span>
-        </div>
+        </AddEventButton>
         <AddEventPanel isOpen={isPanelOpen}></AddEventPanel>
       </div>
     );
   };
 
+  const nothingToDoElement = (
+    <Nothing>
+      <span>NOTHING</span>
+      <span> TO DO </span>
+    </Nothing>
+  );
+
   return (
     <div>
       <TopMenuComponent
-        firstRowHeaderText={today.format('YYYY')}
-        hasTwoRows={true}
-        click={toggleOptionsMenuChild}
-        today={today}
+        toggleOptionsMenu={handleOptionsMenuToggle}
       ></TopMenuComponent>
       <OptionsMenu
         isMenuOpen={isOptionsMenuOpen}
-        toggleOptionsMenuChild={toggleOptionsMenuChild}
+        handleOptionsMenuChildToggle={handleOptionsMenuChildToggle}
       />
       {calendarElement()}
       {coverElement()}
@@ -155,16 +200,51 @@ const StyledCalendar = styled.div`
   padding: 0 30px;
   animation: fadeIn 500ms linear forwards;
 `;
+const Year = styled.div`
+  font-family: 'Montserrat-semibold';
+  font-size: 4em;
+  background-color: var(--calendar-black);
+  color: white;
+  padding-left: 10px;
+`;
 
+const AddEventButton = styled.div`
+  all: unset;
+  background-color: #000;
+  color: white;
+  cursor: pointer;
+  width: 60px;
+  height: 60px;
+  margin: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 4rem;
+  font-family: 'montserrat-semibold';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transition: all 0.3s ease-in-out;
+  .add-event-button-text.clicked {
+    transform: rotate(45deg);
+  }
+  .add-event-button:hover {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.07),
+      0 4px 8px rgba(0, 0, 0, 0.07), 0 8px 16px rgba(0, 0, 0, 0.07),
+      0 16px 32px rgba(0, 0, 0, 0.07), 0 32px 64px rgba(0, 0, 0, 0.07);
+  }
+  .add-event-button-text {
+    transition: all 0.3s ease-in-out;
+  }
+`;
 const ShowHistoryButton = styled.div`
   cursor: pointer;
   margin-top: 10px;
-  background: black;
+  background: var(--calendar-black);
   color: lightgoldenrodyellow;
   padding: 10px;
   transition: all 2s ease-in-out;
 `;
-
 const Nothing = styled.div`
   user-select: none;
   font-size: calc(1rem + 16vw);

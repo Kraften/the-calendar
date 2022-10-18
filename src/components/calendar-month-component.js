@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
-import CalendarDayComponent from '../day-component/day-component';
 import styled from 'styled-components';
 
+import moment from 'moment';
+import CalendarDayComponent from './calendar-day-component';
+
 /**
- *
  * @param {*} props { events: [], monthName: string }
  * @returns
  */
-function Month(props) {
+function CalendarMonthComponent(props) {
   const eventsInMonth = [];
   // Map events into month buckets.
   props.events.map((event) => {
@@ -49,9 +49,9 @@ const MonthContainer = styled.div`
   }
 `;
 
-Month.propTypes = {
+CalendarMonthComponent.propTypes = {
   monthName: PropTypes.string,
   events: PropTypes.array
 };
 
-export default Month;
+export default CalendarMonthComponent;

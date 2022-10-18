@@ -1,15 +1,17 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import styled from 'styled-components';
-import FirebaseEventsService from '../../../services/firebase/events.service';
-import AuthContext from '../../../store/auth-context';
+
+import moment from 'moment';
+import AuthContext from '../store/auth-context';
+import FirebaseEventsService from '../services/firebase/events.service';
 
 // Destructed prop { event } is an object containing information that this component renders.
 const CalendarEventComponent = ({ event, eventIsToday }) => {
-  const dateTime = moment(event.date);
+  const eventDateTime = moment(event.date);
   const authCtx = useContext(AuthContext);
-  const listItemClick = (id) => {
+
+  const handleEventDelete = (id) => {
     FirebaseEventsService.deleteEventById(id);
   };
 
@@ -27,14 +29,14 @@ const CalendarEventComponent = ({ event, eventIsToday }) => {
       <div className="title-and-x-row">
         <span className="event-name">{event.title}</span>
         {authCtx.isLoggedIn ? (
-          <span className="x" onClick={() => listItemClick(event.id)}>
+          <span className="x" onClick={() => handleEventDelete(event.id)}>
             X
           </span>
         ) : (
           ''
         )}
       </div>
-      <span className="event-time">{dateTime.format('HH:mm')}</span>
+      <span className="event-time">{eventDateTime.format('HH:mm')}</span>
 
       <span>{event.comment}</span>
     </StyledEvent>
@@ -47,7 +49,7 @@ const CalendarEventComponent = ({ event, eventIsToday }) => {
 const StyledEvent = styled.li`
   padding-left: 20px;
   margin: 7px;
-  border-left: 11px solid black;
+  border-left: 11px solid var(--calendar-black);
   font-family: 'montserrat-medium';
   transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
 

@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import styled from 'styled-components';
-import CalendarEventComponent from './calendar-event-component/calendar-event-component';
+
+import moment from 'moment';
+import CalendarEventComponent from './calendar-event-component';
 
 /**
  * @param eventList list of events.
@@ -68,7 +69,7 @@ const CalendarDayComponent = ({ eventsInMonth }) => {
 const Day = styled.div`
   display: grid;
   grid-template-columns: 0.5fr 1fr;
-  border-top: 1px solid black;
+  border-top: 1px solid var(--calendar-black);
   padding-top: 15px;
   padding-bottom: 15px;
 
@@ -91,7 +92,7 @@ const Day = styled.div`
   .day {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    border-top: 1px solid black;
+    border-top: 1px solid var(--calendar-black);
     padding-top: 15px;
     padding-bottom: 15px;
   }
