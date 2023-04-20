@@ -3,9 +3,62 @@ import styled from 'styled-components';
 import OptionsMenuComponent from '../../components/options-menu-component';
 import TopMenuComponent from '../../components/top-menu-component/top-menu-component';
 import Could from '../../resources/img/cloud.png';
+import { ref } from 'firebase/storage';
+import { storage } from '../../services/firebase/firebase';
 
 const ArtPage = () => {
   const [isOptionsMenuOpen, setIsOptionsMenuOpen] = useState(false);
+  // const [files, setFiles] = useState();
+
+  // const files = ref(storage, 'gs://calendar-92ec5.appspot.com');
+  const getNewImages = () => {
+    
+    const listRef = ref(storage, 'gs://calendar-92ec5.appspot.com');
+  
+    // Find all the prefixes and items.
+    listRef
+      .listAll()
+      .then((res) => {
+    
+        
+        res.items.forEach((itemRef) => {
+          
+          let urlRef = storage.refFromURL(itemRef);
+          let fileName = urlRef.name;
+          console.log("FILE NAME" + fileName);
+        });
+      })
+      .catch((error) => {
+        console.log("ERROR" + error);
+        // Uh-oh, an error occurred!
+      });
+  };
+  getNewImages()
+
+  // useEffect(() => {}, []);
+
+  // // Find all the prefixes and items.
+  // listAll(files).then((res) => {
+  //   res.prefixes.forEach((folderRef) => {
+  //     // All the prefixes under listRef.
+  //     // You may call listAll() recursively on them.
+  //     const path =`${folderRef._location.bucket}/${folderRef._location.path}`
+  //     // console.log('asd', `${folderRef._location.bucket}/${folderRef._location.path}`);
+  //     const a = ref(storage, path);
+  //     listAll(a).then(e => {
+  //       console.log(e)
+  //     })
+  //   });
+
+  //   // res.items.forEach((itemRef) => {
+  //   //   // All the items under listRef.
+  //   //   // console.log('asd', itemRef);
+  //   // });
+  // })
+  // .catch((error) => {
+  //   // Uh-oh, an error occurred!
+  //   console.log(error)
+  // });
 
   const toggleOptionsMenuChild = () => {
     setIsOptionsMenuOpen(!isOptionsMenuOpen);
@@ -81,13 +134,13 @@ const StyledImage = styled.img`
   box-shadow: 0px 1px 2px 0px rgb(0 0 0 / 50%);
   grid-column: 2 / 4;
   grid-row: 2 / 4;
-  /* opacity: 0.85; */
+  opacity: 0.85;
 `;
 const StyledImage2 = styled.img`
   box-shadow: 0px 1px 2px 0px rgb(0 0 0 / 50%);
   grid-column: 2 / 6;
-  grid-row: 4 / 6;
-  /* opacity: 0.85; */
+  grid-row: 3 / 6;
+  opacity: 0.85;
 `;
 const StyledImage3 = styled.img`
   box-shadow: 0px 1px 2px 0px rgb(0 0 0 / 50%);
