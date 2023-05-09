@@ -60,6 +60,7 @@ const CalendarDayComponent = ({ eventsInMonth }) => {
       </Day>
     );
   });
+
   return <div>{daysInMonth}</div>;
 };
 

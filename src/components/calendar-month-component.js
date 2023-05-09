@@ -9,7 +9,7 @@ import CalendarDayComponent from './calendar-day-component';
  * @param {*} props { events: [], monthName: string }
  * @returns
  */
-function CalendarMonthComponent(props) {
+const CalendarMonthComponent = (props) => {
   const eventsInMonth = [];
   // Map events into month buckets.
   props.events.map((event) => {
@@ -36,7 +36,7 @@ function CalendarMonthComponent(props) {
       ></CalendarDayComponent>
     </MonthContainer>
   );
-}
+};
 
 /*--------------------------------------
 ------------Styled Components-----------

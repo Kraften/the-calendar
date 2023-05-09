@@ -21,16 +21,14 @@ const CalendarPage = () => {
   const [showHistory, toggleHistory] = useBooleanToggle(false);
 
   useEffect(() => {
-    const unsubscribe = FirebaseEventsService.getAllQuery(
-      (querySnapshot) => {
-        const eventsList = querySnapshot.docs.map((docSnapshot) => {
-          return docSnapshot.data();
-        });
-        setIsLoading(false);
-        const b = addIsBeforeBooleanToEvent(eventsList);
-        splitOldAndNewEvents(b);
-      },
-    );
+    const unsubscribe = FirebaseEventsService.getAllQuery((querySnapshot) => {
+      const eventsList = querySnapshot.docs.map((docSnapshot) => {
+        return docSnapshot.data();
+      });
+      setIsLoading(false);
+      const b = addIsBeforeBooleanToEvent(eventsList);
+      splitOldAndNewEvents(b);
+    });
 
     return () => {
       unsubscribe();
@@ -149,7 +147,7 @@ const CalendarPage = () => {
     if (!authCtx.isLoggedIn) return null;
     return (
       <div className="cover">
-        <AddEventButton type="button" onClick={handleAddEventPanelToggle}>
+        <AddEventButton onClick={handleAddEventPanelToggle}>
           <span
             className={`add-event-button-text  ${
               isPanelOpen ? 'clicked add-event-button-text' : ''

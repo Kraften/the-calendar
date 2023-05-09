@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -10,7 +10,7 @@ import SignInForm from './options-menu-sign-in-form-component';
 const OptionsMenuComponent = ({ isMenuOpen, handleOptionsMenuChildToggle }) => {
   const authCtx = useContext(AuthContext);
   const [showLoginForm, setShowLoginForm] = useState(false);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Make sure login form closes when options menu closes.
@@ -20,9 +20,12 @@ const OptionsMenuComponent = ({ isMenuOpen, handleOptionsMenuChildToggle }) => {
   }, [isMenuOpen]);
 
   const MenuItems = () => {
-    // const handleArtClick = () => {
-    //   navigate('/art')
-    // };
+    const handleCalendarClick = () => {
+      navigate('/');
+    };
+    const handleTrainingClick = () => {
+      navigate('/training');
+    };
     const handleLogoutClick = () => {
       authCtx.logout();
     };
@@ -42,7 +45,8 @@ const OptionsMenuComponent = ({ isMenuOpen, handleOptionsMenuChildToggle }) => {
         ) : (
           <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
         )}
-        {/* <MenuItem onClick={handleArtClick}>Art</MenuItem> */}
+        <MenuItem onClick={handleCalendarClick}>Calendar</MenuItem>
+        <MenuItem onClick={handleTrainingClick}>Training</MenuItem>
       </Menu>
     );
   };
